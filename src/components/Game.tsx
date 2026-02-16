@@ -4,7 +4,7 @@ import { SwipeCard } from './SwipeCard';
 import { NeonTimer } from './NeonTimer';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
-import { Trophy, Users, MoveRight } from 'lucide-react';
+import { Trophy, ChevronRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface GameProps {
@@ -27,7 +27,6 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
     const channelRef = useRef<any>(null);
 
     useEffect(() => {
-        // 1. Fetch Initial State
         const init = async () => {
             const { data: gameData } = await supabase.from('games').select('*').eq('id', gameId).single();
             if (gameData) {
@@ -47,7 +46,6 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
         };
         init();
 
-        // 2. Setup Realtime
         const channel = supabase.channel(`game:${gameId}`)
             .on('broadcast', { event: 'game_update' }, ({ payload }) => {
                 if (payload.scores) setScores(payload.scores);
@@ -57,7 +55,6 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
                 if (payload.timeLeft !== undefined) setTimeLeft(payload.timeLeft);
             })
             .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'game_cards' }, (payload) => {
-                // Update deck locally when a card is guessed
                 if (payload.new.status === 'guessed') {
                     setDeck(prev => prev.filter(c => c.game_card_id !== payload.new.id));
                 }
@@ -76,7 +73,6 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
             timerRef.current = setInterval(() => {
                 setTimeLeft(prev => {
                     const next = prev - 1;
-                    // Broadcast timer to others (throttled or just for sync)
                     if (next % 2 === 0) {
                         channelRef.current.send({
                             type: 'broadcast',
@@ -120,8 +116,6 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
         setCurrentTeam(nextTeam);
         setShowTurnEnd(false);
         setTimeLeft(30);
-
-        // Sync to DB
         await supabase.from('games').update({ current_team: nextTeam }).eq('id', gameId);
 
         channelRef.current.send({
@@ -144,14 +138,12 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
             particleCount: 100,
             spread: 70,
             origin: { y: 0.6 },
-            colors: ['#00f2ff', '#7000ff', '#00ff88']
+            colors: ['#ff2d55', '#5856d6', '#34c759']
         });
 
-        // Update DB
         await supabase.from('game_cards').update({ status: 'guessed' }).eq('id', card.game_card_id);
         await supabase.from('games').update({ scores: newScores }).eq('id', gameId);
 
-        // Broadcast
         channelRef.current.send({
             type: 'broadcast',
             event: 'game_update',
@@ -161,22 +153,15 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
         if (deck.length > 1) {
             setCurrentIndex((prev) => (prev + 1) % deck.length);
         } else {
-            // Phase Complete!
             if (phase < 3) {
                 const nextPhase = phase + 1;
                 setPhase(nextPhase);
-
-                // Reset all cards for next phase
                 await supabase.from('game_cards').update({ status: 'deck' }).eq('game_id', gameId);
-
-                // Fetch fresh deck
                 const { data } = await supabase.from('game_cards').select('*, cards(*)').eq('game_id', gameId);
                 if (data) setDeck(data.map(gc => ({ ...gc.cards, game_card_id: gc.id })));
-
                 setCurrentIndex(0);
                 setIsTurnActive(false);
                 setShowTurnEnd(true);
-
                 channelRef.current.send({
                     type: 'broadcast',
                     event: 'game_update',
@@ -197,51 +182,43 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
     const currentCard = deck[currentIndex];
 
     return (
-        <div className="w-full max-w-lg h-full flex flex-col justify-between py-12 px-4 gap-8">
-            <div className="bento-grid">
-                <div className="glass-panel bento-item bento-item-large border-accent-primary/20">
-                    <span className="text-white/40 text-[10px] uppercase font-bold tracking-widest mb-1">{t('phase' + phase + '_title')}</span>
-                    <div className="flex items-center gap-3">
-                        <Users className="text-accent-primary" size={20} />
-                        <span className="text-xl font-black text-white">
-                            {t('team')} {currentTeam}
-                        </span>
-                    </div>
+        <div className="flex-1 flex flex-col items-center justify-between gap-10">
+            {/* Minimal Board */}
+            <div className="w-full grid grid-cols-2 gap-4">
+                <div className={`p-6 rounded-3xl border transition-all ${currentTeam === 1 ? 'bg-accent-primary/10 border-accent-primary' : 'bg-white/5 border-white/10'}`}>
+                    <span className="block text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-1">Team 01</span>
+                    <span className="text-3xl font-black text-white">{scores.team1}</span>
                 </div>
-
-                <div className={`glass-panel bento-item ${currentTeam === 1 ? 'border-accent-primary' : 'border-white/5'}`}>
-                    <span className="text-[10px] text-white/40 uppercase font-bold">{t('team')} 1</span>
-                    <span className="text-2xl font-black text-white">{scores.team1}</span>
-                </div>
-
-                <div className={`glass-panel bento-item ${currentTeam === 2 ? 'border-accent-primary' : 'border-white/5'}`}>
-                    <span className="text-[10px] text-white/40 uppercase font-bold">{t('team')} 2</span>
-                    <span className="text-2xl font-black text-white">{scores.team2}</span>
+                <div className={`p-6 rounded-3xl border transition-all ${currentTeam === 2 ? 'bg-accent-primary/10 border-accent-primary' : 'bg-white/5 border-white/10'}`}>
+                    <span className="block text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-1">Team 02</span>
+                    <span className="text-3xl font-black text-white">{scores.team2}</span>
                 </div>
             </div>
 
-            <div className="flex-1 flex flex-col items-center justify-center relative">
+            <div className="w-full flex-1 flex flex-col items-center justify-center relative">
                 <AnimatePresence mode="wait">
                     {!isTurnActive && !showTurnEnd ? (
                         <motion.div
                             key="start"
-                            initial={{ opacity: 0, scale: 0.8 }}
+                            initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.8 }}
-                            className="flex flex-col items-center gap-6"
+                            exit={{ opacity: 0, scale: 0.9 }}
+                            className="flex flex-col items-center gap-8"
                         >
-                            <div className="w-24 h-24 rounded-full bg-accent-primary/10 flex items-center justify-center border border-accent-primary/30">
-                                <Trophy className="text-accent-primary" size={40} />
+                            <div className="flex flex-col items-center gap-2">
+                                <span className="text-xs font-black text-accent-primary uppercase tracking-[0.5em]">{t('phase' + phase + '_title')}</span>
+                                <h2 className="text-4xl font-black text-white text-center">Team {currentTeam}, ready?</h2>
                             </div>
                             <button
                                 onClick={startTurn}
-                                className="neon-button primary px-12 py-4 text-xl rounded-2xl"
+                                className="btn-primary"
+                                style={{ width: 'auto', padding: '20px 60px', borderRadius: '100px' }}
                             >
-                                READY?
+                                START ROUND
                             </button>
                         </motion.div>
                     ) : isTurnActive ? (
-                        <div className="w-full flex flex-col items-center gap-12">
+                        <div className="w-full h-full flex flex-col items-center justify-center gap-10">
                             <NeonTimer timeLeft={timeLeft} totalTime={30} />
 
                             <div className="card-swipe-container">
@@ -261,18 +238,23 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
                     ) : showTurnEnd ? (
                         <motion.div
                             key="end"
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="glass-panel p-8 flex flex-col items-center gap-6 w-full text-center"
+                            className="w-full bg-[#111418] border border-white/10 p-10 rounded-[32px] flex flex-col items-center text-center gap-8"
                         >
-                            <h3 className="text-3xl font-black text-white">{t('time_up')}</h3>
-                            <p className="text-white/60">{t('next_turn')}</p>
+                            <div className="w-20 h-20 rounded-full bg-accent-primary/10 flex items-center justify-center border border-accent-primary/20">
+                                <Trophy className="text-accent-primary" size={32} />
+                            </div>
+                            <div>
+                                <h3 className="text-4xl font-black text-white mb-2">{t('time_up')}</h3>
+                                <p className="text-white/40 font-medium">Next up: Team {currentTeam === 1 ? 2 : 1}</p>
+                            </div>
 
                             <button
                                 onClick={handleNextTurn}
-                                className="neon-button w-full flex items-center justify-center gap-2"
+                                className="btn-primary flex items-center justify-center gap-2"
                             >
-                                CONTINUE <MoveRight size={18} />
+                                NEXT TEAM <ChevronRight size={20} />
                             </button>
                         </motion.div>
                     ) : null}

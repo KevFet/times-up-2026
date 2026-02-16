@@ -5,7 +5,7 @@ import Game from './components/Game';
 import Setup from './components/Setup';
 import Lobby from './components/Lobby';
 import { RulesModal } from './components/RulesModal';
-import { HelpCircle } from 'lucide-react';
+import { HelpCircle, Zap } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 function App() {
@@ -19,77 +19,104 @@ function App() {
   };
 
   useEffect(() => {
-    // Attempt to make full screen
     const requestFullScreen = () => {
       if (document.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen().catch(() => { });
       }
     };
-
     document.addEventListener('touchstart', requestFullScreen, { once: true });
   }, []);
 
   return (
-    <div className="min-h-screen w-full relative overflow-hidden flex flex-col items-center justify-center p-4">
-      <div className="mesh-gradient-bg" />
+    <div className="app-container">
+      <div className="mesh-bg" />
 
-      {/* HUD / Header */}
-      <div className="fixed top-6 left-0 right-0 px-6 flex justify-between items-center z-50">
-        <div className="flex gap-2">
-          {['fr', 'en', 'es_mx'].map((lng) => (
-            <button
-              key={lng}
-              onClick={() => changeLanguage(lng)}
-              className={`lang-btn ${i18n.language === lng ? 'active' : ''}`}
-            >
-              {lng.toUpperCase()}
-            </button>
-          ))}
+      <header className="header">
+        <div className="logo-container">
+          <Zap className="logo-icon" strokeWidth={3} />
+          <span className="logo-text">Time's Up</span>
         </div>
 
-        <button
-          onClick={() => setShowRules(true)}
-          className="glass-panel p-2 flex items-center justify-center text-white/80 hover:text-white transition-colors"
-        >
-          <HelpCircle size={24} />
-        </button>
-      </div>
-
-      <AnimatePresence mode="wait">
-        {gameState === 'lobby' && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            className="w-full flex justify-center"
+        <div className="header-actions">
+          <button
+            onClick={() => setShowRules(true)}
+            className="icon-btn"
           >
-            <Lobby
-              onGameCreated={(id) => {
-                setGameId(id);
-                setGameState('setup');
-              }}
-              onJoinGame={(id) => {
-                setGameId(id);
-                setGameState('playing');
-              }}
+            <HelpCircle size={20} />
+          </button>
+
+          <div className="lang-selector">
+            {[
+              { code: 'en', label: 'English', flag: '🇺🇸' },
+              { code: 'fr', label: 'Français', flag: '🇫🇷' },
+              { code: 'es_mx', label: 'Español', flag: '🇲🇽' }
+            ].map((lng) => (
+              <button
+                key={lng.code}
+                onClick={() => changeLanguage(lng.code)}
+                className={`lang-btn ${i18n.language === lng.code ? 'active' : ''}`}
+              >
+                <span>{lng.flag}</span>
+                <span className="hidden md:inline">{lng.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      <main className="flex-1 flex flex-col justify-center py-10">
+        <AnimatePresence mode="wait">
+          {gameState === 'lobby' && (
+            <motion.div
+              key="lobby"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+            >
+              <Lobby
+                onGameCreated={(id) => {
+                  setGameId(id);
+                  setGameState('setup');
+                }}
+                onJoinGame={(id) => {
+                  setGameId(id);
+                  setGameState('playing');
+                }}
+              />
+            </motion.div>
+          )}
+
+          {gameState === 'setup' && gameId && (
+            <Setup
+              gameId={gameId}
+              onComplete={() => setGameState('playing')}
             />
-          </motion.div>
-        )}
+          )}
 
-        {gameState === 'setup' && gameId && (
-          <Setup
-            gameId={gameId}
-            onComplete={() => setGameState('playing')}
-          />
-        )}
+          {gameState === 'playing' && gameId && (
+            <Game
+              gameId={gameId}
+              onFinish={() => setGameState('finished')}
+            />
+          )}
 
-        {gameState === 'playing' && gameId && (
-          <Game
-            gameId={gameId}
-            onFinish={() => setGameState('finished')}
-          />
-        )}
-      </AnimatePresence>
+          {gameState === 'finished' && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="flex flex-col items-center gap-6"
+            >
+              <h2 className="text-5xl font-black text-white">GAME OVER</h2>
+              <button
+                onClick={() => setGameState('lobby')}
+                className="btn-primary max-w-xs"
+              >
+                PLAY AGAIN
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </main>
 
       <RulesModal isOpen={showRules} onClose={() => setShowRules(false)} />
     </div>
