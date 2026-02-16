@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '../lib/supabase';
-import { motion } from 'framer-motion';
 
 interface LobbyProps {
     onGameCreated: (gameId: string) => void;
@@ -16,7 +15,7 @@ const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
     const createGame = async () => {
         setLoading(true);
         const code = Math.random().toString(36).substring(2, 6).toUpperCase();
-        const { data, error } = await supabase
+        const { data } = await supabase
             .from('games')
             .insert([{ code, status: 'setup', current_team: 1, scores: { team1: 0, team2: 0 } }])
             .select()
@@ -28,7 +27,7 @@ const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
 
     const joinGame = async () => {
         setLoading(true);
-        const { data, error } = await supabase
+        const { data } = await supabase
             .from('games')
             .select('*')
             .eq('code', code.toUpperCase())

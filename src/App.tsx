@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './i18n';
 import Game from './components/Game';
@@ -9,7 +9,7 @@ import { HelpCircle } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 function App() {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const [gameState, setGameState] = useState<'lobby' | 'setup' | 'playing' | 'finished'>('lobby');
   const [showRules, setShowRules] = useState(false);
   const [gameId, setGameId] = useState<string | null>(null);

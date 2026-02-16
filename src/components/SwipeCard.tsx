@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, useMotionValue, useTransform, useAnimation } from 'framer-motion';
-import { Check, X, Repeat } from 'lucide-react';
+import { Check, X } from 'lucide-react';
 
 interface SwipeCardProps {
     name: string;
@@ -25,7 +25,7 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({ name, onSwipeRight, onSwip
 
     const controls = useAnimation();
 
-    const handleDragEnd = async (event: any, info: any) => {
+    const handleDragEnd = async (_: any, info: any) => {
         if (info.offset.x > 100) {
             await controls.start({ x: 500, opacity: 0 });
             onSwipeRight();
