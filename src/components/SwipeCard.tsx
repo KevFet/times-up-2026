@@ -11,29 +11,33 @@ interface SwipeCardProps {
 
 export const SwipeCard: React.FC<SwipeCardProps> = ({ name, onSwipeRight, onSwipeLeft, canSkip }) => {
     const x = useMotionValue(0);
-    const rotate = useTransform(x, [-200, 200], [-15, 15]);
-    const opacity = useTransform(x, [-250, -150, 0, 150, 250], [0, 1, 1, 1, 0]);
-    const scale = useTransform(x, [-200, 0, 200], [0.8, 1, 0.8]);
+    const rotate = useTransform(x, [-200, 200], [-10, 10]);
+    const opacity = useTransform(x, [-300, -200, 0, 200, 300], [0, 1, 1, 1, 0]);
+    const scale = useTransform(x, [-200, 0, 200], [0.95, 1, 0.95]);
 
     const background = useTransform(
         x,
         [-150, 0, 150],
         [
-            canSkip ? 'rgba(255, 45, 85, 0.4)' : 'rgba(13, 17, 23, 1)',
+            canSkip ? 'rgba(255, 45, 85, 0.2)' : 'rgba(13, 17, 23, 1)',
             'rgba(13, 17, 23, 1)',
-            'rgba(52, 199, 89, 0.4)'
+            'rgba(52, 199, 89, 0.2)'
         ]
     );
 
     const controls = useAnimation();
 
     const handleDragEnd = async (_: any, info: any) => {
-        if (info.offset.x > 140) {
-            await controls.start({ x: 500, opacity: 0, transition: { duration: 0.3 } });
+        if (info.offset.x > 120) {
+            await controls.start({ x: 500, opacity: 0, transition: { duration: 0.2, ease: "easeIn" } });
             onSwipeRight();
-        } else if (info.offset.x < -140 && canSkip) {
-            await controls.start({ x: -500, opacity: 0, transition: { duration: 0.3 } });
+            controls.set({ x: 0, opacity: 0, scale: 0.8 });
+            controls.start({ opacity: 1, scale: 1 });
+        } else if (info.offset.x < -120 && canSkip) {
+            await controls.start({ x: -500, opacity: 0, transition: { duration: 0.2, ease: "easeIn" } });
             onSwipeLeft?.();
+            controls.set({ x: 0, opacity: 0, scale: 0.8 });
+            controls.start({ opacity: 1, scale: 1 });
         } else {
             controls.start({ x: 0, opacity: 1, scale: 1 });
         }
@@ -45,52 +49,46 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({ name, onSwipeRight, onSwip
             dragConstraints={{ left: canSkip ? -1000 : 0, right: 1000 }}
             animate={controls}
             onDragEnd={handleDragEnd}
-            className="swipe-card shadow-2xl border-white/5"
+            className="card-main flex flex-col items-center justify-center p-12 text-center"
             style={{
-                ...style,
-                x, rotate, opacity, background, scale,
-                border: '1px solid rgba(255,255,255,0.05)',
-                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+                x,
+                rotate,
+                opacity,
+                scale,
+                background,
+                position: 'absolute',
+                inset: 0,
+                cursor: 'grab',
+                userSelect: 'none',
+                touchAction: 'none'
             }}
         >
-            <div className="absolute top-10 flex justify-center w-full gap-20 pointer-events-none opacity-20">
-                <motion.div style={{ opacity: useTransform(x, [-100, 0], [1, 0]) }}>
-                    <X size={32} className="text-accent-primary" />
+            <div className="absolute top-8 inset-x-0 flex justify-center gap-24 pointer-events-none">
+                <motion.div style={{ opacity: useTransform(x, [-80, -20], [1, 0]) }}>
+                    <X size={40} className="text-accent-primary" />
                 </motion.div>
-                <motion.div style={{ opacity: useTransform(x, [0, 100], [0, 1]) }}>
-                    <Check size={32} className="text-accent-success" />
+                <motion.div style={{ opacity: useTransform(x, [20, 80], [0, 1]) }}>
+                    <Check size={40} className="text-accent-success" />
                 </motion.div>
             </div>
 
-            <h3 className="text-5xl font-black text-center text-white tracking-tighter px-6 leading-[1.1]">
+            <h3 className="text-6xl font-black text-white tracking-tighter leading-tight drop-shadow-2xl">
                 {name}
             </h3>
 
-            <div className="absolute bottom-12 flex flex-col items-center gap-2">
-                <div className="w-12 h-1 bg-white/10 rounded-full overflow-hidden">
+            <div className="absolute bottom-12 flex flex-col items-center gap-3 opacity-30">
+                <div className="w-16 h-1 bg-white/10 rounded-full overflow-hidden">
                     <motion.div
-                        className="h-full bg-accent-primary"
-                        style={{ width: useTransform(x, [-150, 0, 150], ['100%', '0%', '100%']) }}
+                        className="h-full bg-white"
+                        style={{ width: useTransform(x, [-120, 0, 120], ['100%', '0%', '100%']) }}
                     />
                 </div>
-                <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">
-                    {canSkip ? 'Swipe to decide' : 'Swipe to validate'}
+                <span className="text-[10px] font-black uppercase tracking-[0.4em]">
+                    Slide to Validate
                 </span>
             </div>
+
+            <div className="arena-bg" />
         </motion.div>
     );
-};
-
-const style = {
-    position: 'absolute' as const,
-    width: '100%' as const,
-    height: '100%' as const,
-    borderRadius: '40px',
-    display: 'flex' as const,
-    flexDirection: 'column' as const,
-    justifyContent: 'center' as const,
-    alignItems: 'center' as const,
-    padding: '32px',
-    cursor: 'grab' as const,
-    userSelect: 'none' as const,
 };
