@@ -150,9 +150,9 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
     };
 
     return (
-        <div className="flex-1 flex flex-col items-center py-6">
-            <div className="w-full flex justify-between items-center mb-12">
-                <div className="score-pill">
+        <div className="flex-1 flex flex-col items-center py-2 sm:py-6 overflow-hidden">
+            <div className="w-full flex justify-between items-center mb-6 sm:mb-12">
+                <div className="score-pill scale-90 sm:scale-100">
                     <span className="score-label">Team 1</span>
                     <span className="score-value">{scores.team1}</span>
                 </div>
@@ -170,13 +170,13 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
                     </div>
                 </div>
 
-                <div className="score-pill">
+                <div className="score-pill scale-90 sm:scale-100">
                     <span className="score-label">Team 2</span>
                     <span className="score-value">{scores.team2}</span>
                 </div>
             </div>
 
-            <div className="flex-1 w-full flex flex-col items-center justify-center relative">
+            <div className="flex-1 w-full flex flex-col items-center justify-center relative min-h-0">
                 <AnimatePresence mode="wait">
                     {!isTurnActive && !showTurnEnd ? (
                         <motion.div
@@ -200,13 +200,13 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
                             key="active"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            className="w-full flex flex-col items-center gap-12"
+                            className="w-full flex flex-col items-center gap-4 sm:gap-8 h-full"
                         >
-                            <div className="relative">
+                            <div className="scale-75 sm:scale-100 shrink-0">
                                 <NeonTimer timeLeft={timeLeft} totalTime={30} />
                             </div>
 
-                            <div className="w-full max-w-sm h-96 relative">
+                            <div className="w-full max-w-[320px] sm:max-w-sm h-72 sm:h-96 relative shrink-0">
                                 <SwipeCard
                                     name={cards[currentCardIndex]?.[`name_${i18n.language}`] || cards[currentCardIndex]?.name_en || '??'}
                                     onSwipeRight={handleSwipeRight}

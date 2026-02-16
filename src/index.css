@@ -13,6 +13,8 @@
   --accent-secondary: #5856d6;
   --accent-success: #34c759;
 
+  --card-height: min(400px, 50vh);
+
   --text-primary: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.5);
   --text-muted: rgba(255, 255, 255, 0.2);

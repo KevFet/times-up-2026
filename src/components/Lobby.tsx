@@ -105,10 +105,15 @@ const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
                             {loading ? (
                                 <motion.div
                                     key="loading"
-                                    animate={{ rotate: 360 }}
-                                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                                    className="w-6 h-6 border-2 border-black/10 border-t-black rounded-full"
-                                />
+                                    className="flex items-center gap-3"
+                                >
+                                    <motion.div
+                                        animate={{ rotate: 360 }}
+                                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                        className="w-5 h-5 border-2 border-black/10 border-t-black rounded-full"
+                                    />
+                                    <span className="text-xs">GENERATING ARENA DECK...</span>
+                                </motion.div>
                             ) : (
                                 <motion.div key="text" className="flex items-center gap-3">
                                     <Plus size={22} strokeWidth={3} />
