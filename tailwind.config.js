@@ -8,11 +8,14 @@ export default {
         extend: {
             colors: {
                 accent: {
-                    primary: '#ff2d55',
-                    secondary: '#5856d6',
-                    success: '#34c759',
+                    primary: 'var(--accent-primary)',
+                    secondary: 'var(--accent-secondary)',
+                    success: 'var(--accent-success)',
                 }
-            }
+            },
+            fontFamily: {
+                sans: ['Outfit', 'sans-serif'],
+            },
         },
     },
     plugins: [],
