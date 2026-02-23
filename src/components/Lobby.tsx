@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Zap, Play } from 'lucide-react';
+import { Plus, Zap } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 interface LobbyProps {
@@ -63,7 +63,7 @@ const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
     };
 
     return (
-        <div className="flex-1 flex flex-col justify-center items-center w-full min-h-screen px-4 py-8 relative bg-transparent overflow-hidden">
+        <div className="flex-1 flex flex-col justify-center items-center w-full min-h-screen px-6 py-12 relative overflow-hidden">
             {/* Native 2026 Liquid Background Pattern from index.css */}
             <div className="mesh-bg" />
 
@@ -71,98 +71,95 @@ const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-                className="w-full max-w-[360px] space-y-10 relative z-10 flex flex-col items-center"
+                className="w-full max-w-[320px] space-y-12 relative z-10 flex flex-col items-center"
             >
                 {/* Brand / Header */}
-                <div className="flex flex-col items-center text-center space-y-5">
+                <div className="flex flex-col items-center text-center space-y-4">
                     <motion.div
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ delay: 0.2 }}
-                        className="btn-ghost flex items-center justify-center gap-2 px-4 py-2 rounded-full shadow-[0_0_15px_rgba(255,59,48,0.2)]"
-                        style={{ padding: '6px 16px', borderRadius: '100px' }}
+                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1A1111]/80 backdrop-blur-lg border border-[#3A1818]"
                     >
-                        <Zap size={14} className="text-accent-primary" style={{ filter: 'drop-shadow(0 0 10px rgba(255, 45, 85, 0.5))' }} />
-                        <span className="text-[10px] font-black tracking-[0.2em] text-accent-primary uppercase">
-                            {t('edition', '2026 EDITION')}
+                        <Zap size={10} className="fill-accent-primary text-accent-primary" />
+                        <span className="text-[9px] font-black tracking-widest text-[#FF3B30] uppercase">
+                            {t('edition', 'ÉDITION 2026')}
                         </span>
                     </motion.div>
 
-                    <div className="flex flex-col items-center leading-[0.80] pt-2">
-                        <h1 className="text-[64px] font-black italic tracking-tighter logo-text" style={{ fontSize: '72px' }}>
+                    <div className="flex flex-col items-center leading-none">
+                        <h1 className="text-[48px] font-black italic tracking-tighter text-white drop-shadow-md">
                             TIME'S
                         </h1>
-                        <h2 className="text-[72px] font-black italic tracking-tighter text-accent-primary" style={{ filter: 'drop-shadow(0 0 15px rgba(255, 45, 85, 0.4))' }}>
+                        <h2 className="text-[54px] font-black italic tracking-tighter text-[#FF3B30] -mt-2">
                             UP
                         </h2>
                     </div>
-                    <p className="text-white/50 text-[11px] font-bold tracking-widest uppercase">
-                        {t('subtitle', 'THE ULTIMATE GUESSING GAME')}
+                    <p className="text-[#888888] text-xs font-bold tracking-wide pt-2">
+                        {t('subtitle', 'The game that your aunts would ban.')}
                     </p>
                 </div>
 
-                {/* Main Glassmorphism UI Components - Uses global card-main class */}
-                <div className="w-full card-main p-8 space-y-7 border border-white/10" style={{ backdropFilter: 'blur(36px)', background: 'rgba(5, 7, 12, 0.6)' }}>
-                    <div className="space-y-4">
-                        <label className="text-[10px] font-black tracking-[0.2em] text-white/50 uppercase ml-2 block">
+                {/* Specific exact UI from the image matching (No huge glass box wrapping it) */}
+                <div className="w-full space-y-6">
+                    <div className="space-y-2">
+                        <label className="text-[8px] font-black tracking-widest text-[#666666] uppercase ml-1 block">
                             {t('your_nickname', 'YOUR NICKNAME')}
                         </label>
                         <input
                             type="text"
                             placeholder={t('nickname_placeholder', 'Ex. El Bicho')}
-                            className="w-full bg-white/5 border border-white/10 backdrop-blur-md shadow-inner rounded-3xl px-5 py-5 text-[14px] text-white focus:outline-none focus:bg-white/10 focus:border-white/30 placeholder:text-white/20 font-black tracking-wider transition-all duration-300"
+                            className="w-full bg-[#1A1A1C]/80 backdrop-blur-xl border border-[#1A1A1C]/50 rounded-[14px] px-5 py-4 text-sm text-white focus:outline-none focus:border-white/20 placeholder:text-[#555555] font-semibold transition-colors"
                         />
                     </div>
 
                     <button
                         onClick={createGame}
                         disabled={loading}
-                        className="w-full btn-premium flex items-center justify-center py-5 shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_35px_rgba(255,255,255,0.3)] duration-500"
-                        style={{ padding: '20px 0' }}
+                        className="w-full bg-white text-black font-black text-xs tracking-[0.15em] uppercase rounded-[14px] py-4 flex items-center justify-center gap-2 hover:bg-[#F0F0F0] active:scale-[0.98] transition-all disabled:opacity-50"
                     >
                         <AnimatePresence mode="wait">
                             {loading ? (
                                 <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-3">
-                                    <div className="w-6 h-6 border-4 border-black/20 border-t-black rounded-full animate-spin" />
+                                    <div className="w-4 h-4 border-2 border-black/20 border-t-black rounded-full animate-spin" />
                                 </motion.div>
                             ) : (
                                 <motion.div key="text" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2">
-                                    <Plus size={20} strokeWidth={3} />
+                                    <Plus size={16} strokeWidth={3} />
                                     {t('create_room', 'CREATE ROOM')}
                                 </motion.div>
                             )}
                         </AnimatePresence>
                     </button>
 
-                    <div className="flex items-center gap-4 py-2 opacity-50">
-                        <div className="h-[2px] flex-1 bg-white/10 rounded-full" />
-                        <span className="text-[10px] font-black uppercase text-white/70 tracking-[0.2em]">
+                    <div className="flex items-center gap-4 py-2 opacity-80">
+                        <div className="h-[1px] flex-1 bg-[#1A1A1C]" />
+                        <span className="text-[8px] font-black uppercase text-[#666666] tracking-widest whitespace-nowrap">
                             {t('or_join_one', 'OR JOIN ONE')}
                         </span>
-                        <div className="h-[2px] flex-1 bg-white/10 rounded-full" />
+                        <div className="h-[1px] flex-1 bg-[#1A1A1C]" />
                     </div>
 
-                    <div className="flex gap-4">
+                    <div className="flex gap-3">
                         <input
                             type="text"
                             value={code}
                             onChange={(e) => setCode(e.target.value.toUpperCase())}
                             placeholder={t('code', 'CODE')}
-                            className="flex-1 w-[55%] bg-white/5 border border-white/10 backdrop-blur-md shadow-inner rounded-[20px] px-4 py-5 text-[15px] text-center text-white font-black tracking-[0.3em] focus:outline-none focus:bg-white/10 focus:border-white/30 placeholder:text-white/20 uppercase transition-all duration-300"
+                            className="flex-1 w-[60%] bg-[#1A1A1C]/80 backdrop-blur-xl border border-[#1A1A1C]/50 rounded-[14px] px-4 py-4 text-xs text-center text-white font-black tracking-[0.2em] focus:outline-none focus:border-white/20 placeholder:text-[#555555] uppercase transition-colors"
                         />
                         <button
                             onClick={joinGame}
                             disabled={loading || !code}
-                            className="w-[45%] btn-ghost px-0 py-0 flex items-center justify-center gap-2 active:scale-[0.97] transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none hover:bg-white/10 border border-white/20 rounded-[20px]"
-                            style={{ padding: 0 }}
+                            className="w-[40%] bg-[#28282A]/80 backdrop-blur-xl border border-[#28282A]/50 hover:bg-[#323235] text-white font-black text-[10px] tracking-widest uppercase rounded-[14px] py-4 active:scale-[0.98] transition-all disabled:opacity-50 disabled:pointer-events-none flex items-center justify-center gap-1.5"
                         >
-                            <Play size={12} className="fill-white" /> {t('join', 'JOIN')}
+                            <svg className="w-3 h-3 fill-white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg> {t('join', 'JOIN')}
                         </button>
                     </div>
                 </div>
 
-                <div className="pt-2 text-center opacity-30">
-                    <p className="text-[10px] font-black tracking-[0.3em] uppercase text-white">
+                <div className="pt-10 text-center">
+                    <p className="text-[8px] font-black tracking-widest uppercase text-[#444444]">
                         {t('made_with', 'MADE WITH PASSION 🔥')}
                     </p>
                 </div>
