@@ -2,6 +2,28 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 const resources = {
+    en: {
+        translation: {
+            "slogan": "The game your mom warned you about.",
+            "label_pseudo": "YOUR NICKNAME",
+            "placeholder_pseudo": "Ex: The Goat",
+            "button_create": "+ CREATE ROOM",
+            "separator": "OR JOIN ONE",
+            "label_code": "ROOM CODE",
+            "button_enter": "JOIN",
+            "footer": "MADE WITH LOVE & A BIT OF AI 🇺🇸",
+            "rules": "Rules",
+            "start_game": "Start Game",
+            "phase": "PHASE",
+            "team": "TEAM",
+            "time_up": "TIME'S UP!",
+            "change": "CHANGE!",
+            "next_turn": "NEXT TURN",
+            "continue": "CONTINUE",
+            "return_menu": "RETURN TO BASE",
+            "finish": "ARENA CLEARED"
+        }
+    },
     fr: {
         translation: {
             "slogan": "Le jeu que ta daronne va détester.",
@@ -9,7 +31,7 @@ const resources = {
             "placeholder_pseudo": "Ex: Le King",
             "button_create": "+ CRÉER UNE ROOM",
             "separator": "OU REJOINS UNE PARTIE",
-            "label_code": "CODE",
+            "label_code": "CODE DE LA ROOM",
             "button_enter": "REJOINDRE",
             "footer": "FAIT AVEC AMOUR ET UN PEU D'IA 🇫🇷",
             "rules": "Règles",
@@ -24,14 +46,14 @@ const resources = {
             "finish": "FIN DU JEU"
         }
     },
-    es_mx: {
+    es: {
         translation: {
             "slogan": "El juego que tus tías prohibirían.",
             "label_pseudo": "TU APODO",
             "placeholder_pseudo": "Ej. El Bicho",
             "button_create": "+ CREAR SALA",
             "separator": "O ÚNETE A UNA",
-            "label_code": "CÓDIGO",
+            "label_code": "CÓDIGO DE SALA",
             "button_enter": "ENTRAR",
             "footer": "HECHO CON PURA SAZÓN MEXA 🇲🇽",
             "rules": "Reglas",
@@ -42,7 +64,7 @@ const resources = {
             "change": "¡CAMBIO!",
             "next_turn": "PRÓXIMO TURNO",
             "continue": "CONTINUAR",
-            "return_menu": "RETOUR AU MENU",
+            "return_menu": "VOLVER AL MENÚ",
             "finish": "FIN DEL JUEGO"
         }
     }
@@ -52,8 +74,8 @@ i18n
     .use(initReactI18next)
     .init({
         resources,
-        lng: "es_mx",
-        fallbackLng: "es_mx",
+        lng: "en",
+        fallbackLng: "en",
         interpolation: {
             escapeValue: false
         }

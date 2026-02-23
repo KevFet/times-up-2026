@@ -64,19 +64,20 @@ const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
 
     return (
         <div className="container-strict">
-            {/* Title Section */}
-            <div className="flex flex-col items-center">
-                <h1 className="title-strict text-white">TIME'S UP</h1>
-                <h1 className="title-strict mx-glow -mt-4">MX</h1>
+            {/* Header Section */}
+            <div className="header-stack">
+                <div className="flex flex-col items-center">
+                    <h1 className="title-strict text-white leading-[0.8]">TIME'S UP</h1>
+                    <h1 className="title-strict mx-glow -mt-2">MX</h1>
+                </div>
                 <p className="slogan-strict">{t('slogan')}</p>
             </div>
 
             {/* Inputs & Actions */}
-            <div className="flex flex-col gap-[24px] mt-4">
-                <div className="flex flex-col gap-2">
-                    <label className="text-[10px] font-black tracking-[0.2em] text-[#444444] ml-2 uppercase">
-                        {t('label_pseudo')}
-                    </label>
+            <div className="flex flex-col gap-[24px] mt-2">
+                {/* Nickname Field */}
+                <div className="field-group">
+                    <label className="label-strict">{t('label_pseudo')}</label>
                     <input
                         type="text"
                         value={nickname}
@@ -86,6 +87,7 @@ const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
                     />
                 </div>
 
+                {/* Create Button */}
                 <button
                     onClick={createGame}
                     disabled={loading || !nickname}
@@ -94,35 +96,31 @@ const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
                     {loading ? '...' : t('button_create')}
                 </button>
 
-                <div className="flex flex-col gap-[16px]">
-                    <div className="flex items-center gap-4">
-                        <div className="h-[1px] flex-1 bg-[#222222]" />
-                        <span className="text-[9px] font-black uppercase text-[#333333] tracking-[0.2em] whitespace-nowrap">
-                            {t('separator')}
-                        </span>
-                        <div className="h-[1px] flex-1 bg-[#222222]" />
-                    </div>
+                {/* Separator */}
+                <div className="separator-container">
+                    <div className="separator-line" />
+                    <span className="separator-text">{t('separator')}</span>
+                    <div className="separator-line" />
+                </div>
 
-                    <div className="flex flex-col gap-2">
-                        <label className="text-[10px] font-black tracking-[0.2em] text-[#444444] ml-2 uppercase">
-                            {t('label_code')}
-                        </label>
-                        <div className="flex gap-4">
-                            <input
-                                type="text"
-                                value={code}
-                                onChange={(e) => setCode(e.target.value.toUpperCase())}
-                                placeholder="----"
-                                className="input-strict flex-1 text-center tracking-[0.4em] font-black"
-                            />
-                            <button
-                                onClick={joinGame}
-                                disabled={loading || !code || !nickname}
-                                className="button-strict w-[120px]"
-                            >
-                                {t('button_enter')}
-                            </button>
-                        </div>
+                {/* Join Section */}
+                <div className="field-group">
+                    <label className="label-strict">{t('label_code')}</label>
+                    <div className="flex gap-4">
+                        <input
+                            type="text"
+                            value={code}
+                            onChange={(e) => setCode(e.target.value.toUpperCase())}
+                            placeholder="----"
+                            className="input-strict flex-1 text-center tracking-[0.4em] font-black"
+                        />
+                        <button
+                            onClick={joinGame}
+                            disabled={loading || !code || !nickname}
+                            className="button-strict w-[120px]"
+                        >
+                            {t('button_enter')}
+                        </button>
                     </div>
                 </div>
             </div>

@@ -13,16 +13,6 @@ export const NeonTimer: React.FC<NeonTimerProps> = ({ timeLeft, totalTime }) => 
 
     return (
         <div className="relative flex items-center justify-center w-48 h-48">
-            {/* Pulsing Ambient Glow */}
-            <motion.div
-                animate={{
-                    scale: timeLeft < 10 ? [1, 1.1, 1] : 1,
-                    opacity: timeLeft < 10 ? [0.2, 0.4, 0.2] : 0.2
-                }}
-                transition={{ duration: 1, repeat: Infinity }}
-                className="absolute inset-0 rounded-full bg-accent-primary blur-3xl"
-            />
-
             <svg className="w-full h-full transform -rotate-90 relative z-10">
                 {/* Track */}
                 <circle
@@ -30,7 +20,7 @@ export const NeonTimer: React.FC<NeonTimerProps> = ({ timeLeft, totalTime }) => 
                     cy="50%"
                     r={radius}
                     stroke="rgba(255,255,255,0.05)"
-                    strokeWidth="8"
+                    strokeWidth="4"
                     fill="transparent"
                 />
 
@@ -39,24 +29,26 @@ export const NeonTimer: React.FC<NeonTimerProps> = ({ timeLeft, totalTime }) => 
                     cx="50%"
                     cy="50%"
                     r={radius}
-                    stroke="var(--accent-primary)"
-                    strokeWidth="8"
+                    stroke={timeLeft < 10 ? "#FF0000" : "#FFFFFF"}
+                    strokeWidth="4"
                     strokeDasharray={circumference}
                     animate={{ strokeDashoffset: offset }}
                     transition={{ duration: 1, ease: "linear" }}
                     strokeLinecap="round"
                     fill="transparent"
-                    className="timer-glow"
+                    style={{
+                        filter: timeLeft < 10 ? 'drop-shadow(0 0 8px #FF0000)' : 'none'
+                    }}
                 />
             </svg>
 
             {/* Time Display */}
             <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
-                <span className={`text-6xl font-black tabular-nums tracking-tighter ${timeLeft < 10 ? 'text-accent-primary' : 'text-white'}`}>
+                <span className={`text-6xl font-black tabular-nums tracking-tighter italic ${timeLeft < 10 ? 'text-[#FF0000]' : 'text-white'}`}>
                     {timeLeft}
                 </span>
-                <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-30">
-                    Seconds
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] opacity-20">
+                    SEC
                 </span>
             </div>
         </div>

@@ -3,6 +3,7 @@
 :root {
   --bg-color: #000000;
   --text-white: #FFFFFF;
+  --text-gray: #A0A0A0;
   --accent-red: #FF0000;
   --input-bg: #121212;
   --input-border: #222222;
@@ -42,6 +43,7 @@ button {
   cursor: pointer;
   outline: none;
   font-family: inherit;
+  transition: all 0.2s ease;
 }
 
 input {
@@ -52,23 +54,30 @@ input {
   font-family: inherit;
 }
 
-a {
-  text-decoration: none;
-}
-
-/* Global Utility for the glow */
-.mx-glow {
-  color: var(--accent-red);
-  text-shadow: 0 0 20px var(--accent-red);
-}
-
+/* Typography & Layout */
 .title-strict {
   font-weight: 900;
   font-style: italic;
   text-transform: uppercase;
   font-size: 3.5rem;
-  line-height: 0.9;
+  line-height: 0.85;
   letter-spacing: -0.05em;
+  text-align: center;
+}
+
+.mx-glow {
+  color: var(--accent-red);
+  text-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+}
+
+.slogan-strict {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 12px;
+  text-align: center;
 }
 
 .container-strict {
@@ -78,7 +87,25 @@ a {
   display: flex;
   flex-direction: column;
   gap: var(--gap-standard);
-  padding: 20px;
+  padding: 24px;
+  position: relative;
+}
+
+/* Form Elements */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.label-strict {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-gray);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-left: 4px;
 }
 
 .input-strict {
@@ -87,9 +114,20 @@ a {
   background-color: var(--input-bg);
   border: 1px solid var(--input-border);
   border-radius: var(--border-radius);
-  padding: 0 20px;
-  font-size: 1rem;
+  padding: 0 16px;
+  font-size: 15px;
+  font-weight: 500;
   color: var(--text-white);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.input-strict:focus {
+  border-color: #333333;
+  background-color: #161616;
+}
+
+.input-strict::placeholder {
+  color: #444444;
 }
 
 .button-strict {
@@ -103,55 +141,89 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 14px;
+  letter-spacing: 0.05em;
 }
 
+.button-strict:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+.button-strict:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Language Selector (Glassmorphism EN|FR|ES) */
 .lang-selector-glass {
   position: fixed;
   top: 24px;
   right: 24px;
   display: flex;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 100px;
   padding: 4px;
   z-index: 100;
 }
 
 .lang-btn-glass {
-  padding: 6px 12px;
+  padding: 8px 14px;
   border-radius: 100px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
-  color: rgba(255, 255, 255, 0.4);
-  transition: all 0.3s ease;
+  color: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.05em;
 }
 
 .lang-btn-glass.active {
   background: rgba(255, 255, 255, 0.1);
   color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.slogan-strict {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.3);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-top: 8px;
-  text-align: center;
+.lang-divider {
+  width: 1px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.1);
 }
 
+/* Footer Section */
 .footer-strict {
   position: fixed;
-  bottom: 24px;
+  bottom: 32px;
   width: 100%;
   text-align: center;
   font-size: 10px;
-  font-weight: 900;
+  font-weight: 800;
   color: rgba(255, 255, 255, 0.2);
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.25em;
   pointer-events: none;
+}
+
+.separator-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 8px 0;
+}
+
+.separator-line {
+  height: 1px;
+  flex: 1;
+  background: #1A1A1A;
+}
+
+.separator-text {
+  font-size: 10px;
+  font-weight: 800;
+  color: #333333;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
 }

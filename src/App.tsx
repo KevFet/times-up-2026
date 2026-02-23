@@ -15,18 +15,25 @@ function App() {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-black overflow-hidden relative">
-      {/* Language Selector */}
+      {/* Language Selector EN | FR | ES */}
       <div className="lang-selector-glass">
+        <button
+          onClick={() => changeLanguage('en')}
+          className={`lang-btn-glass ${i18n.language === 'en' ? 'active' : ''}`}
+        >
+          EN
+        </button>
+        <div className="lang-divider" />
         <button
           onClick={() => changeLanguage('fr')}
           className={`lang-btn-glass ${i18n.language === 'fr' ? 'active' : ''}`}
         >
           FR
         </button>
-        <div className="w-[1px] h-3 bg-white/10 self-center" />
+        <div className="lang-divider" />
         <button
-          onClick={() => changeLanguage('es_mx')}
-          className={`lang-btn-glass ${i18n.language === 'es_mx' ? 'active' : ''}`}
+          onClick={() => changeLanguage('es')}
+          className={`lang-btn-glass ${i18n.language === 'es' ? 'active' : ''}`}
         >
           ES
         </button>

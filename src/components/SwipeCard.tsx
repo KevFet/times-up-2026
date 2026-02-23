@@ -19,9 +19,9 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({ name, onSwipeRight, onSwip
         x,
         [-150, 0, 150],
         [
-            canSkip ? 'rgba(255, 45, 85, 0.2)' : 'rgba(13, 17, 23, 1)',
-            'rgba(13, 17, 23, 1)',
-            'rgba(52, 199, 89, 0.2)'
+            canSkip ? 'rgba(255, 0, 0, 0.15)' : 'rgba(18, 18, 18, 1)',
+            'rgba(18, 18, 18, 1)',
+            'rgba(255, 255, 255, 0.1)'
         ]
     );
 
@@ -49,7 +49,7 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({ name, onSwipeRight, onSwip
             dragConstraints={{ left: canSkip ? -1000 : 0, right: 1000 }}
             animate={controls}
             onDragEnd={handleDragEnd}
-            className="card-main flex flex-col items-center justify-center p-12 text-center"
+            className="flex flex-col items-center justify-center p-8 text-center"
             style={{
                 x,
                 rotate,
@@ -60,35 +60,30 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({ name, onSwipeRight, onSwip
                 inset: 0,
                 cursor: 'grab',
                 userSelect: 'none',
-                touchAction: 'none'
+                touchAction: 'none',
+                borderRadius: '24px',
+                border: '1px solid #222222',
+                boxShadow: '0 20px 40px rgba(0,0,0,0.4)'
             }}
         >
             <div className="absolute top-8 inset-x-0 flex justify-center gap-24 pointer-events-none">
                 <motion.div style={{ opacity: useTransform(x, [-80, -20], [1, 0]) }}>
-                    <X size={40} className="text-accent-primary" />
+                    <X size={40} color="#FF0000" />
                 </motion.div>
                 <motion.div style={{ opacity: useTransform(x, [20, 80], [0, 1]) }}>
-                    <Check size={40} className="text-accent-success" />
+                    <Check size={40} color="#FFFFFF" />
                 </motion.div>
             </div>
 
-            <h3 className="text-6xl font-black text-white tracking-tighter leading-tight drop-shadow-2xl">
+            <h3 className="text-5xl font-black text-white tracking-tight leading-tight uppercase font-style-italic italic">
                 {name}
             </h3>
 
-            <div className="absolute bottom-12 flex flex-col items-center gap-3 opacity-30">
-                <div className="w-16 h-1 bg-white/10 rounded-full overflow-hidden">
-                    <motion.div
-                        className="h-full bg-white"
-                        style={{ width: useTransform(x, [-120, 0, 120], ['100%', '0%', '100%']) }}
-                    />
-                </div>
-                <span className="text-[10px] font-black uppercase tracking-[0.4em]">
+            <div className="absolute bottom-12 flex flex-col items-center gap-3 opacity-20">
+                <span className="text-[10px] font-black uppercase tracking-[0.3em]">
                     Slide to Validate
                 </span>
             </div>
-
-            <div className="arena-bg" />
         </motion.div>
     );
 };
