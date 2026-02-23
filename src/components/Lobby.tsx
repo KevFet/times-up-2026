@@ -74,80 +74,80 @@ const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="w-full max-w-[280px] space-y-10"
+                className="w-full max-w-[320px] space-y-12"
             >
-                <div className="text-center space-y-3">
+                <div className="text-center space-y-4">
                     <motion.div
                         initial={{ scale: 0.8 }}
                         animate={{ scale: 1 }}
-                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1A1111] border border-[#331818]"
+                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1A1111] border border-[#3A1818]"
                     >
                         <Zap size={10} className="fill-[#FF3B30] text-[#FF3B30]" />
-                        <span className="text-[9px] font-black tracking-widest text-[#FF3B30] uppercase">EDICIÓN MEXICANA</span>
+                        <span className="text-[9px] font-black tracking-widest text-[#FF3B30] uppercase">ÉDITION 2026</span>
                     </motion.div>
 
                     <div className="flex flex-col items-center leading-none">
-                        <h1 className="text-4xl sm:text-5xl font-black italic tracking-tighter text-white drop-shadow-md">
-                            SIN LÍMITES
+                        <h1 className="text-[48px] font-black italic tracking-tighter text-white drop-shadow-md">
+                            TIME'S
                         </h1>
-                        <h2 className="text-4xl sm:text-5xl font-black italic tracking-tighter text-[#FF3B30]">
-                            MX
+                        <h2 className="text-[54px] font-black italic tracking-tighter text-[#FF3B30] -mt-2">
+                            UP
                         </h2>
                     </div>
-                    <p className="text-white/40 text-[11px] font-bold tracking-wide pt-2">
-                        El juego que tus tías prohibirían.
+                    <p className="text-[#888888] text-xs font-bold tracking-wide pt-2">
+                        The game that your aunts would ban.
                     </p>
                 </div>
 
-                <div className="space-y-4">
-                    <div className="space-y-1.5">
-                        <label className="text-[9px] font-black tracking-widest text-white/50 uppercase ml-1 block">
-                            TU APODO
+                <div className="space-y-6">
+                    <div className="space-y-2">
+                        <label className="text-[8px] font-black tracking-widest text-[#666666] uppercase ml-1 block">
+                            YOUR NICKNAME
                         </label>
                         <input
                             type="text"
-                            placeholder="Ej. El Bicho"
-                            className="w-full bg-[#1A1A1C] border-none rounded-[14px] px-4 py-3.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-white/20 placeholder:text-white/20 font-medium"
+                            placeholder="Ex. El Bicho"
+                            className="w-full bg-[#1A1A1C] border border-[#1A1A1C] rounded-[14px] px-5 py-4 text-sm text-white focus:outline-none focus:border-white/20 placeholder:text-[#555555] font-semibold transition-colors"
                         />
                     </div>
 
                     <button
                         onClick={createGame}
                         disabled={loading}
-                        className="w-full bg-white text-black font-black text-xs tracking-widest uppercase rounded-[14px] py-3.5 flex items-center justify-center gap-2 hover:bg-white/90 active:scale-95 transition-all disabled:opacity-50"
+                        className="w-full bg-white text-black font-black text-xs tracking-[0.15em] uppercase rounded-[14px] py-4 flex items-center justify-center gap-2 hover:bg-[#F0F0F0] active:scale-[0.98] transition-all disabled:opacity-50"
                     >
-                        {loading ? '...' : <><Plus size={16} strokeWidth={3} /> CREAR SALA</>}
+                        {loading ? '...' : <><Plus size={16} strokeWidth={3} /> CREATE ROOM</>}
                     </button>
 
-                    <div className="flex items-center gap-3 py-1">
-                        <div className="h-[1px] flex-1 bg-white/10" />
-                        <span className="text-[8px] font-black uppercase text-white/30 tracking-widest whitespace-nowrap">
-                            O ÚNETE A UNA
+                    <div className="flex items-center gap-4 py-2">
+                        <div className="h-[1px] flex-1 bg-[#1A1A1C]" />
+                        <span className="text-[8px] font-black uppercase text-[#666666] tracking-widest whitespace-nowrap">
+                            OR JOIN ONE
                         </span>
-                        <div className="h-[1px] flex-1 bg-white/10" />
+                        <div className="h-[1px] flex-1 bg-[#1A1A1C]" />
                     </div>
 
-                    <div className="flex gap-2">
+                    <div className="flex gap-3">
                         <input
                             type="text"
                             value={code}
                             onChange={(e) => setCode(e.target.value.toUpperCase())}
-                            placeholder="CÓDIGO"
-                            className="flex-1 w-full min-w-0 bg-[#1A1A1C] border-none rounded-[14px] px-2 py-3.5 text-xs text-center text-white font-black tracking-[0.2em] focus:outline-none placeholder:text-white/20 uppercase"
+                            placeholder="CODE"
+                            className="flex-1 w-[60%] bg-[#1A1A1C] border border-[#1A1A1C] rounded-[14px] px-4 py-4 text-xs text-center text-white font-black tracking-[0.2em] focus:outline-none focus:border-white/20 placeholder:text-[#555555] uppercase transition-colors"
                         />
                         <button
                             onClick={joinGame}
                             disabled={loading || !code}
-                            className="bg-[#2C2C2E] hover:bg-[#3A3A3C] text-white font-black text-[11px] tracking-widest uppercase rounded-[14px] px-5 active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none flex items-center justify-center gap-1.5"
+                            className="w-[40%] bg-[#28282A] hover:bg-[#323235] text-white font-black text-[10px] tracking-widest uppercase rounded-[14px] py-4 active:scale-[0.98] transition-all disabled:opacity-50 disabled:pointer-events-none flex items-center justify-center gap-1.5"
                         >
-                            <svg className="w-3 h-3 fill-white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg> ENTRAR
+                            <svg className="w-3 h-3 fill-white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg> JOIN
                         </button>
                     </div>
                 </div>
 
-                <div className="pt-12 text-center">
-                    <p className="text-[8px] font-black tracking-widest uppercase text-white/20">
-                        HECHO CON PURA SAZÓN MEXA 🇲🇽
+                <div className="pt-10 text-center">
+                    <p className="text-[8px] font-black tracking-widest uppercase text-[#444444]">
+                        MADE WITH PASSION 🔥
                     </p>
                 </div>
             </motion.div>
