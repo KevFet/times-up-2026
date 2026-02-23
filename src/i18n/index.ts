@@ -17,7 +17,17 @@ const resources = {
             "team": "Équipe",
             "time_up": "Temps écoulé !",
             "setup_title": "Préparation",
-            "discard_instructions": "Chaque joueur reçoit des cartes. Jetez-en 2 pour n'en garder que 40 au total."
+            "discard_instructions": "Chaque joueur reçoit des cartes. Jetez-en 2 pour n'en garder que 40 au total.",
+            "edition": "ÉDITION 2026",
+            "subtitle": "Le jeu que vos tantes interdiraient.",
+            "your_nickname": "VOTRE PSEUDO",
+            "nickname_placeholder": "Ex. Zidane",
+            "create_room": "CRÉER UN SALON",
+            "or_join_one": "OU REJOINDRE",
+            "code": "CODE",
+            "join": "JOUER",
+            "made_with": "FAIT AVEC PASSION 🔥",
+            "generating_deck": "GÉNÉRATION DU DECK..."
         }
     },
     en: {
@@ -35,7 +45,17 @@ const resources = {
             "team": "Team",
             "time_up": "Time's up!",
             "setup_title": "Setup",
-            "discard_instructions": "Each player receives cards. Discard 2 to keep a total of 40 cards."
+            "discard_instructions": "Each player receives cards. Discard 2 to keep a total of 40 cards.",
+            "edition": "2026 EDITION",
+            "subtitle": "The game that your aunts would ban.",
+            "your_nickname": "YOUR NICKNAME",
+            "nickname_placeholder": "Ex. The Rock",
+            "create_room": "CREATE ROOM",
+            "or_join_one": "OR JOIN ONE",
+            "code": "CODE",
+            "join": "JOIN",
+            "made_with": "MADE WITH PASSION 🔥",
+            "generating_deck": "GENERATING ARENA DECK..."
         }
     },
     es_mx: {
@@ -53,7 +73,17 @@ const resources = {
             "team": "Equipo",
             "time_up": "¡Tiempo agotado!",
             "setup_title": "Configuración",
-            "discard_instructions": "Cada jugador recibe cartas. Descarta 2 para mantener 40 cartas en total."
+            "discard_instructions": "Cada jugador recibe cartas. Descarta 2 para mantener 40 cartas en total.",
+            "edition": "EDICIÓN MEXICANA",
+            "subtitle": "El juego que tus tías prohibirían.",
+            "your_nickname": "TU APODO",
+            "nickname_placeholder": "Ej. El Bicho",
+            "create_room": "CREAR SALA",
+            "or_join_one": "O ÚNETE A UNA",
+            "code": "CÓDIGO",
+            "join": "ENTRAR",
+            "made_with": "HECHO CON PURA SAZÓN MEXA 🇲🇽",
+            "generating_deck": "GENERANDO SALA..."
         }
     }
 };
