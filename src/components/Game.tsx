@@ -12,7 +12,7 @@ interface GameProps {
 }
 
 const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
-    const { i18n } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [phase, setPhase] = useState(1);
     const [currentTeam, setCurrentTeam] = useState(1);
     const [scores, setScores] = useState({ team1: 0, team2: 0 });
@@ -158,12 +158,12 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
         <div className="container-strict">
             <div className="flex justify-between items-center w-full">
                 <div className="flex flex-col items-center">
-                    <span className="text-[10px] uppercase opacity-40">TEAM 1</span>
+                    <span className="text-[10px] uppercase opacity-40">{t('team')} 1</span>
                     <span className="text-2xl font-black">{scores.team1}</span>
                 </div>
 
                 <div className="flex flex-col items-center">
-                    <span className="text-[10px] uppercase opacity-40">PHASE {phase}</span>
+                    <span className="text-[10px] uppercase opacity-40">{t('phase')} {phase}</span>
                     <div className="flex gap-1 mt-1">
                         {[1, 2, 3].map(p => (
                             <div key={p} className={`w-1.5 h-1.5 rounded-full ${p <= phase ? 'bg-[#ff0000]' : 'bg-[#222222]'}`} />
@@ -172,7 +172,7 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
                 </div>
 
                 <div className="flex flex-col items-center">
-                    <span className="text-[10px] uppercase opacity-40">TEAM 2</span>
+                    <span className="text-[10px] uppercase opacity-40">{t('team')} 2</span>
                     <span className="text-2xl font-black">{scores.team2}</span>
                 </div>
             </div>
@@ -186,9 +186,9 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
                             animate={{ opacity: 1 }}
                             className="text-center flex flex-col gap-6 w-full"
                         >
-                            <h2 className="title-strict">EQUIPO {currentTeam}</h2>
+                            <h2 className="title-strict">{t('team')} {currentTeam}</h2>
                             <button onClick={startTurn} className="button-strict">
-                                EMPEZAR
+                                {t('start_game')}
                             </button>
                         </motion.div>
                     ) : isTurnActive ? (
@@ -216,13 +216,13 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
                             animate={{ opacity: 1 }}
                             className="text-center flex flex-col gap-6 w-full"
                         >
-                            <h2 className="title-strict">¡CAMBIO!</h2>
+                            <h2 className="title-strict">{t('change')}</h2>
                             <div className="bg-[#121212] border border-[#222222] p-6 rounded-[12px]">
-                                <p className="text-[#444444] text-[10px] font-black uppercase tracking-widest mb-1">PRÓXIMO TURNO</p>
-                                <p className="text-2xl font-black">EQUIPO {currentTeam === 1 ? 2 : 1}</p>
+                                <p className="text-[#444444] text-[10px] font-black uppercase tracking-widest mb-1">{t('next_turn')}</p>
+                                <p className="text-2xl font-black">{t('team')} {currentTeam === 1 ? 2 : 1}</p>
                             </div>
                             <button onClick={handleNextTurn} className="button-strict">
-                                CONTINUAR
+                                {t('continue')}
                             </button>
                         </motion.div>
                     ) : null}

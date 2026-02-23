@@ -2,13 +2,36 @@ import { useState } from 'react';
 import Lobby from './components/Lobby';
 import Game from './components/Game';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 function App() {
+  const { t, i18n } = useTranslation();
   const [gameState, setGameState] = useState<'lobby' | 'playing' | 'finished'>('lobby');
   const [gameId, setGameId] = useState<string | null>(null);
 
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
+
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-black overflow-hidden">
+    <div className="min-h-screen w-full flex items-center justify-center bg-black overflow-hidden relative">
+      {/* Language Selector */}
+      <div className="lang-selector-glass">
+        <button
+          onClick={() => changeLanguage('fr')}
+          className={`lang-btn-glass ${i18n.language === 'fr' ? 'active' : ''}`}
+        >
+          FR
+        </button>
+        <div className="w-[1px] h-3 bg-white/10 self-center" />
+        <button
+          onClick={() => changeLanguage('es_mx')}
+          className={`lang-btn-glass ${i18n.language === 'es_mx' ? 'active' : ''}`}
+        >
+          ES
+        </button>
+      </div>
+
       <main className="w-full">
         <AnimatePresence mode="wait">
           {gameState === 'lobby' && (
@@ -52,17 +75,22 @@ function App() {
               animate={{ opacity: 1 }}
               className="container-strict text-center"
             >
-              <h1 className="title-strict">FIN DU JEU</h1>
+              <h1 className="title-strict">{t('finish')}</h1>
               <button
                 onClick={() => setGameState('lobby')}
-                className="button-strict"
+                className="button-strict mt-12"
               >
-                RETOUR AU MENU
+                {t('return_menu')}
               </button>
             </motion.div>
           )}
         </AnimatePresence>
       </main>
+
+      {/* Persistent Footer */}
+      <footer className="footer-strict">
+        {t('footer')}
+      </footer>
     </div>
   );
 }
