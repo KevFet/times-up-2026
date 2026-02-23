@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { motion } from 'framer-motion';
-import { Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 interface LobbyProps {
@@ -12,9 +10,11 @@ interface LobbyProps {
 const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
     const { t } = useTranslation();
     const [code, setCode] = useState('');
+    const [nickname, setNickname] = useState('');
     const [loading, setLoading] = useState(false);
 
     const createGame = async () => {
+        if (!nickname) return;
         setLoading(true);
         const gameCode = Math.random().toString(36).substring(2, 6).toUpperCase();
 
@@ -50,7 +50,7 @@ const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
     };
 
     const joinGame = async () => {
-        if (!code) return;
+        if (!code || !nickname) return;
         setLoading(true);
         const { data } = await supabase
             .from('games')
@@ -63,101 +63,58 @@ const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
     };
 
     return (
-        <div className="flex-1 flex flex-col justify-center items-center w-full h-screen bg-black relative overflow-hidden selection:bg-red-600/30 font-['Kanit']">
-            {/* Background Discrete Auras */}
-            <div className="absolute top-1/2 -left-[10%] w-[40%] h-[40%] bg-red-600/10 blur-[120px] rounded-full" />
-            <div className="absolute top-1/2 -right-[10%] w-[40%] h-[40%] bg-blue-600/10 blur-[120px] rounded-full" />
+        <div className="container-strict">
+            {/* Title Section */}
+            <div className="flex flex-col items-center">
+                <h1 className="title-strict text-white">TIME'S UP</h1>
+                <h1 className="title-strict mx-glow -mt-4">MX</h1>
+            </div>
 
-            <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full max-w-md px-6 flex flex-col items-center gap-y-12 relative z-10"
-            >
-                {/* Title Section (Holographic) */}
-                <div className="text-center flex flex-col items-center leading-none">
-                    <motion.h1
-                        className="text-6xl md:text-7xl font-black italic tracking-tighter text-white"
-                    >
-                        TIME'S UP
-                    </motion.h1>
-                    <motion.h2
-                        className="text-7xl md:text-8xl font-black italic tracking-tighter text-red-600 drop-shadow-[0_0_15px_rgba(220,38,38,0.8)] -mt-2"
-                    >
-                        MX
-                    </motion.h2>
-                </div>
+            {/* Inputs & Actions */}
+            <div className="flex flex-col gap-[24px]">
+                <input
+                    type="text"
+                    value={nickname}
+                    onChange={(e) => setNickname(e.target.value)}
+                    placeholder={t('nickname_placeholder', 'TU APODO')}
+                    className="input-strict"
+                />
 
-                {/* Main Action Block */}
-                <div className="w-full flex flex-col gap-y-12">
-                    {/* Nickname Section */}
-                    <div className="flex flex-col gap-y-4">
-                        <label className="text-[10px] font-black tracking-[0.4em] text-white/30 uppercase ml-4">
-                            {t('your_nickname', 'TU APODO')}
-                        </label>
+                <button
+                    onClick={createGame}
+                    disabled={loading || !nickname}
+                    className="button-strict"
+                >
+                    {loading ? '...' : t('create_room', 'CREAR SALA')}
+                </button>
+
+                <div className="flex flex-col gap-[12px]">
+                    <div className="flex items-center gap-4">
+                        <div className="h-[1px] flex-1 bg-[#222222]" />
+                        <span className="text-[10px] font-black uppercase text-[#444444] tracking-[0.2em]">
+                            {t('or', 'O')}
+                        </span>
+                        <div className="h-[1px] flex-1 bg-[#222222]" />
+                    </div>
+
+                    <div className="flex gap-4">
                         <input
                             type="text"
-                            placeholder={t('nickname_placeholder', 'Ej. El Bicho')}
-                            className="w-full h-16 bg-white/5 border border-white/10 rounded-2xl px-8 text-lg text-white font-bold placeholder:text-white/10 focus:outline-none focus:ring-1 focus:ring-white/20 transition-all backdrop-blur-xl"
+                            value={code}
+                            onChange={(e) => setCode(e.target.value.toUpperCase())}
+                            placeholder={t('code', 'CÓDIGO')}
+                            className="input-strict flex-1 text-center tracking-[0.3em]"
                         />
-                    </div>
-
-                    {/* Create Room Button (Pure Solid White) */}
-                    <button
-                        onClick={createGame}
-                        disabled={loading}
-                        className="w-full h-16 bg-white text-black font-black text-sm tracking-[0.25em] uppercase rounded-2xl flex items-center justify-center gap-3 active:scale-[0.98] transition-all disabled:opacity-50"
-                    >
-                        {loading ? (
-                            <div className="w-6 h-6 border-3 border-black/20 border-t-black rounded-full animate-spin" />
-                        ) : (
-                            <>
-                                <Plus size={24} strokeWidth={4} />
-                                {t('create_room', 'CREAR SALA')}
-                            </>
-                        )}
-                    </button>
-
-                    {/* Join Section */}
-                    <div className="flex flex-col gap-y-8">
-                        {/* Divider */}
-                        <div className="flex items-center gap-x-6 px-4">
-                            <div className="h-[1px] flex-1 bg-white/10" />
-                            <span className="text-[10px] font-black uppercase text-white/20 tracking-[0.4em]">
-                                {t('or_join_one', 'O ÚNETE A UNA')}
-                            </span>
-                            <div className="h-[1px] flex-1 bg-white/10" />
-                        </div>
-
-                        <div className="flex gap-x-4">
-                            <input
-                                type="text"
-                                value={code}
-                                onChange={(e) => setCode(e.target.value.toUpperCase())}
-                                placeholder={t('code', 'CÓDIGO')}
-                                className="flex-[3] h-16 bg-white/5 border border-white/10 rounded-2xl px-6 text-xl text-center text-white font-black tracking-[0.4em] placeholder:text-white/10 focus:outline-none focus:ring-1 focus:ring-white/20 transition-all backdrop-blur-xl"
-                            />
-                            <button
-                                onClick={joinGame}
-                                disabled={loading || !code}
-                                className="flex-[2] h-16 bg-white/10 border border-white/10 hover:bg-white/20 text-white font-black text-xs tracking-widest uppercase rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-50"
-                            >
-                                <svg className="w-4 h-4 fill-red-600 drop-shadow-[0_0_8px_rgba(220,38,38,0.5)]" viewBox="0 0 24 24">
-                                    <path d="M8 5v14l11-7z" />
-                                </svg>
-                                {t('join', 'ENTRAR')}
-                            </button>
-                        </div>
+                        <button
+                            onClick={joinGame}
+                            disabled={loading || !code || !nickname}
+                            className="button-strict w-[120px]"
+                        >
+                            {t('join', 'ENTRAR')}
+                        </button>
                     </div>
                 </div>
-
-                {/* Footer */}
-                <div className="mt-4">
-                    <p className="text-[9px] font-black tracking-[0.5em] text-white/20 uppercase transition-opacity">
-                        {t('made_with', 'HECHO CON PURA SAZÓN MEXA 🇲🇽')}
-                    </p>
-                </div>
-            </motion.div>
+            </div>
         </div>
     );
 };

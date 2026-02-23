@@ -4,7 +4,6 @@ import { SwipeCard } from './SwipeCard';
 import { NeonTimer } from './NeonTimer';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
-import { ChevronRight, Zap } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface GameProps {
@@ -39,12 +38,12 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
 
             const { data: gameCards } = await supabase
                 .from('game_cards')
-                .select('*, card:cards(*)')
+                .select('*, cards(*)')
                 .eq('game_id', gameId)
                 .eq('status', 'deck');
 
             if (gameCards) {
-                const mapped = gameCards.map(gc => gc.card || gc.cards).filter(Boolean);
+                const mapped = gameCards.map(gc => gc.cards).filter(Boolean);
                 setCards(mapped.sort(() => 0.5 - Math.random()));
             }
         };
@@ -92,7 +91,6 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
 
         await supabase.from('games').update({ scores: newScores }).eq('id', gameId);
 
-        // Update card status
         await supabase
             .from('game_cards')
             .update({ status: 'guessed' })
@@ -109,7 +107,7 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
             particleCount: 40,
             spread: 70,
             origin: { y: 0.6 },
-            colors: ['#ff2d55', '#5856d6', '#34c759']
+            colors: ['#ff0000', '#ffffff']
         });
     };
 
@@ -128,7 +126,6 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
             setPhase(nextPhase);
             await supabase.from('games').update({ phase: nextPhase }).eq('id', gameId);
 
-            // Reset cards to deck for next phase
             await supabase
                 .from('game_cards')
                 .update({ status: 'deck' })
@@ -158,49 +155,40 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
     };
 
     return (
-        <div className="flex-1 flex flex-col items-center py-2 sm:py-6 overflow-hidden">
-            <div className="w-full flex justify-between items-center mb-6 sm:mb-12">
-                <div className="score-pill scale-90 sm:scale-100">
-                    <span className="score-label">Team 1</span>
-                    <span className="score-value">{scores.team1}</span>
+        <div className="container-strict">
+            <div className="flex justify-between items-center w-full">
+                <div className="flex flex-col items-center">
+                    <span className="text-[10px] uppercase opacity-40">TEAM 1</span>
+                    <span className="text-2xl font-black">{scores.team1}</span>
                 </div>
 
                 <div className="flex flex-col items-center">
-                    <div className="text-[10px] font-black tracking-[0.3em] uppercase opacity-30 mb-1">Phase</div>
-                    <div className="flex gap-2">
+                    <span className="text-[10px] uppercase opacity-40">PHASE {phase}</span>
+                    <div className="flex gap-1 mt-1">
                         {[1, 2, 3].map(p => (
-                            <div
-                                key={p}
-                                className={`w-1.5 h-1.5 rounded-full transition-all duration-500 ${p === phase ? 'bg-accent-primary scale-150 shadow-[0_0_8px_var(--accent-primary)]' : 'bg-white/10'
-                                    }`}
-                            />
+                            <div key={p} className={`w-1.5 h-1.5 rounded-full ${p <= phase ? 'bg-[#ff0000]' : 'bg-[#222222]'}`} />
                         ))}
                     </div>
                 </div>
 
-                <div className="score-pill scale-90 sm:scale-100">
-                    <span className="score-label">Team 2</span>
-                    <span className="score-value">{scores.team2}</span>
+                <div className="flex flex-col items-center">
+                    <span className="text-[10px] uppercase opacity-40">TEAM 2</span>
+                    <span className="text-2xl font-black">{scores.team2}</span>
                 </div>
             </div>
 
-            <div className="flex-1 w-full flex flex-col items-center justify-center relative min-h-0">
+            <div className="flex-1 flex flex-col items-center justify-center min-h-[400px]">
                 <AnimatePresence mode="wait">
                     {!isTurnActive && !showTurnEnd ? (
                         <motion.div
                             key="ready"
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 1.1 }}
-                            className="text-center space-y-8"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="text-center flex flex-col gap-6 w-full"
                         >
-                            <div className="space-y-2">
-                                <span className="text-xs font-black text-accent-primary uppercase tracking-[0.5em]">{t('phase' + phase + '_info')}</span>
-                                <h2 className="text-5xl font-black tracking-tighter">Team {currentTeam}<br />READY?</h2>
-                            </div>
-                            <button onClick={startTurn} className="btn-premium px-12 mx-auto">
-                                <Zap size={20} className="fill-current" />
-                                START ARENA
+                            <h2 className="title-strict">EQUIPO {currentTeam}</h2>
+                            <button onClick={startTurn} className="button-strict">
+                                EMPEZAR
                             </button>
                         </motion.div>
                     ) : isTurnActive ? (
@@ -208,18 +196,13 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
                             key="active"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            className="w-full flex flex-col items-center gap-4 sm:gap-8 h-full"
+                            className="w-full flex flex-col items-center gap-8"
                         >
-                            <div className="scale-75 sm:scale-100 shrink-0">
-                                <NeonTimer timeLeft={timeLeft} totalTime={30} />
-                            </div>
+                            <NeonTimer timeLeft={timeLeft} totalTime={30} />
 
-                            <div
-                                className="w-full max-w-[320px] sm:max-w-sm relative shrink-0"
-                                style={{ flex: 1, minHeight: '300px', maxHeight: '400px' }}
-                            >
+                            <div className="w-full relative h-[300px]">
                                 <SwipeCard
-                                    name={cards[currentCardIndex]?.[`name_${i18n.language}`] || cards[currentCardIndex]?.name_en || '??'}
+                                    name={cards[currentCardIndex]?.[`name_${i18n.language}`] || cards[currentCardIndex]?.name_es || cards[currentCardIndex]?.name_en || '??'}
                                     onSwipeRight={handleSwipeRight}
                                     onSwipeLeft={handleSwipeLeft}
                                     canSkip={true}
@@ -229,23 +212,17 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
                     ) : showTurnEnd ? (
                         <motion.div
                             key="end"
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            className="text-center space-y-8"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="text-center flex flex-col gap-6 w-full"
                         >
-                            <div className="space-y-2">
-                                <h3 className="text-6xl font-black tracking-tighter uppercase">TIME'S UP</h3>
-                                <p className="text-text-secondary font-bold tracking-widest uppercase text-sm">Transferring Controls...</p>
+                            <h2 className="title-strict">¡CAMBIO!</h2>
+                            <div className="bg-[#121212] border border-[#222222] p-6 rounded-[12px]">
+                                <p className="text-[#444444] text-[10px] font-black uppercase tracking-widest mb-1">PRÓXIMO TURNO</p>
+                                <p className="text-2xl font-black">EQUIPO {currentTeam === 1 ? 2 : 1}</p>
                             </div>
-
-                            <div className="p-8 bg-white/5 border border-white/10 rounded-[32px] backdrop-blur-xl">
-                                <p className="text-white/40 text-xs font-black uppercase tracking-widest mb-2">Next Commander</p>
-                                <p className="text-3xl font-black">Team {currentTeam === 1 ? 2 : 1}</p>
-                            </div>
-
-                            <button onClick={handleNextTurn} className="btn-premium px-12 mx-auto">
-                                <span>Proceed</span>
-                                <ChevronRight size={20} />
+                            <button onClick={handleNextTurn} className="button-strict">
+                                CONTINUAR
                             </button>
                         </motion.div>
                     ) : null}
