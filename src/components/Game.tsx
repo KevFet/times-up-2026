@@ -39,12 +39,13 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
 
             const { data: gameCards } = await supabase
                 .from('game_cards')
-                .select('*, cards(*)')
+                .select('*, card:cards(*)')
                 .eq('game_id', gameId)
                 .eq('status', 'deck');
 
             if (gameCards) {
-                setCards(gameCards.map(gc => gc.cards).sort(() => 0.5 - Math.random()));
+                const mapped = gameCards.map(gc => gc.card || gc.cards).filter(Boolean);
+                setCards(mapped.sort(() => 0.5 - Math.random()));
             }
         };
 
@@ -206,7 +207,10 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
                                 <NeonTimer timeLeft={timeLeft} totalTime={30} />
                             </div>
 
-                            <div className="w-full max-w-[320px] sm:max-w-sm h-72 sm:h-96 relative shrink-0">
+                            <div
+                                className="w-full max-w-[320px] sm:max-w-sm relative shrink-0"
+                                style={{ flex: 1, minHeight: '300px', maxHeight: '400px' }}
+                            >
                                 <SwipeCard
                                     name={cards[currentCardIndex]?.[`name_${i18n.language}`] || cards[currentCardIndex]?.name_en || '??'}
                                     onSwipeRight={handleSwipeRight}
