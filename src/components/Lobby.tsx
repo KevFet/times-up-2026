@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Zap } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 interface LobbyProps {
