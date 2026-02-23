@@ -63,144 +63,101 @@ const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
     };
 
     return (
-        <div className="flex-1 flex flex-col justify-center items-center w-full min-h-screen px-6 py-12 relative overflow-hidden font-['Kanit'] selection:bg-[#FF0000]/30">
-            {/* 2026 Ambient Background Light Fields */}
-            <div className="fixed inset-0 bg-[#020305] z-[-2]" />
-            <div className="fixed inset-0 z-[-1]">
-                <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-[#FF0000]/10 blur-[120px] rounded-full animate-pulse" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-[#00FFFF]/10 blur-[120px] rounded-full animate-pulse [animation-delay:2s]" />
-            </div>
+        <div className="flex-1 flex flex-col justify-center items-center w-full h-screen bg-black relative overflow-hidden selection:bg-red-600/30 font-['Kanit']">
+            {/* Background Discrete Auras */}
+            <div className="absolute top-1/2 -left-[10%] w-[40%] h-[40%] bg-red-600/10 blur-[120px] rounded-full" />
+            <div className="absolute top-1/2 -right-[10%] w-[40%] h-[40%] bg-blue-600/10 blur-[120px] rounded-full" />
 
             <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full max-w-[420px] flex flex-col items-center gap-12 relative z-10"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="w-full max-w-md px-6 flex flex-col items-center gap-y-12 relative z-10"
             >
-                {/* Floating Glass Header Section */}
-                <div className="flex flex-col items-center text-center gap-6">
-                    <motion.div
-                        initial={{ y: -20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.3 }}
-                        className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-3xl shadow-[0_0_20px_rgba(255,0,0,0.15)]"
+                {/* Title Section (Holographic) */}
+                <div className="text-center flex flex-col items-center leading-none">
+                    <motion.h1
+                        className="text-6xl md:text-7xl font-black italic tracking-tighter text-white"
                     >
-                        <Zap size={14} className="text-[#FF0000] drop-shadow-[0_0_8px_#FF0000] fill-[#FF0000]" />
-                        <span className="text-[11px] font-black tracking-[0.25em] text-white/80 uppercase">
-                            {t('edition', 'EDICIÓN MEXICANA')}
-                        </span>
-                    </motion.div>
-
-                    <div className="flex flex-col items-center leading-[0.85] py-4">
-                        <motion.h1
-                            initial={{ x: -30, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            transition={{ delay: 0.5 }}
-                            className="text-[64px] md:text-[72px] font-black italic tracking-tighter text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
-                        >
-                            TIME'S UP
-                        </motion.h1>
-                        <motion.h2
-                            initial={{ x: 30, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            transition={{ delay: 0.6 }}
-                            className="text-[76px] md:text-[88px] font-black italic tracking-tighter text-[#FF0000] drop-shadow-[0_0_40px_rgba(255,0,0,0.7)]"
-                        >
-                            MX
-                        </motion.h2>
-                    </div>
-                    <p className="text-white/40 text-sm font-bold tracking-wide italic">
-                        {t('subtitle', 'El juego que tus tías prohibirían.')}
-                    </p>
+                        TIME'S UP
+                    </motion.h1>
+                    <motion.h2
+                        className="text-7xl md:text-8xl font-black italic tracking-tighter text-red-600 drop-shadow-[0_0_15px_rgba(220,38,38,0.8)] -mt-2"
+                    >
+                        MX
+                    </motion.h2>
                 </div>
 
-                {/* Glass Bento Form Section */}
-                <div className="w-full flex flex-col gap-10">
-                    <div className="space-y-4">
-                        <label className="text-[10px] font-black tracking-[0.4em] text-white/30 uppercase ml-2 block">
+                {/* Main Action Block */}
+                <div className="w-full flex flex-col gap-y-12">
+                    {/* Nickname Section */}
+                    <div className="flex flex-col gap-y-4">
+                        <label className="text-[10px] font-black tracking-[0.4em] text-white/30 uppercase ml-4">
                             {t('your_nickname', 'TU APODO')}
                         </label>
-                        <div className="group relative">
-                            <input
-                                type="text"
-                                placeholder={t('nickname_placeholder', 'Ej. El Bicho')}
-                                className="w-full bg-white/5 border border-white/10 rounded-[20px] px-8 py-6 text-base text-white focus:outline-none focus:ring-1 focus:ring-white/30 placeholder:text-white/10 font-bold transition-all backdrop-blur-[40px]"
-                            />
-                            <div className="absolute inset-0 rounded-[20px] bg-white/[0.02] opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity" />
-                        </div>
-                    </div>
-
-                    {/* Main CTA: Radiant Frost Glass */}
-                    <motion.button
-                        whileHover={{ scale: 1.02, y: -2 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={createGame}
-                        disabled={loading}
-                        className="group relative w-full bg-white text-black font-black text-xs tracking-[0.25em] uppercase rounded-[20px] py-7 flex items-center justify-center gap-4 overflow-hidden shadow-[0_0_40px_rgba(255,255,255,0.15)] transition-all disabled:opacity-50"
-                    >
-                        {/* Light sweep animation */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#FF0000]/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-
-                        <AnimatePresence mode="wait">
-                            {loading ? (
-                                <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                                    <div className="w-6 h-6 border-3 border-black/10 border-t-black rounded-full animate-spin" />
-                                </motion.div>
-                            ) : (
-                                <motion.div key="text" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-3 relative z-10">
-                                    <Plus size={22} strokeWidth={4} />
-                                    {t('create_room', 'CREAR SALA')}
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </motion.button>
-
-                    {/* Laser Aura Separator */}
-                    <div className="flex items-center gap-8 py-2">
-                        <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-[#FF0000]/40 to-transparent shadow-[0_0_10px_#FF0000]" />
-                        <span className="text-[10px] font-black uppercase text-white/30 tracking-[0.4em] whitespace-nowrap italic">
-                            {t('or_join_one', 'O ÚNETE A UNA')}
-                        </span>
-                        <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-[#FF0000]/40 to-transparent shadow-[0_0_10px_#FF0000]" />
-                    </div>
-
-                    <div className="flex flex-col md:flex-row gap-5">
                         <input
                             type="text"
-                            value={code}
-                            onChange={(e) => setCode(e.target.value.toUpperCase())}
-                            placeholder={t('code', 'CÓDIGO')}
-                            className="flex-1 bg-white/5 border border-white/10 rounded-[20px] px-6 py-6 text-sm text-center text-white font-black tracking-[0.5em] focus:outline-none focus:ring-1 focus:ring-white/30 placeholder:text-white/10 uppercase transition-all backdrop-blur-[40px]"
+                            placeholder={t('nickname_placeholder', 'Ej. El Bicho')}
+                            className="w-full h-16 bg-white/5 border border-white/10 rounded-2xl px-8 text-lg text-white font-bold placeholder:text-white/10 focus:outline-none focus:ring-1 focus:ring-white/20 transition-all backdrop-blur-xl"
                         />
-                        <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={joinGame}
-                            disabled={loading || !code}
-                            className="md:w-auto px-10 py-6 bg-black/40 border border-white/10 rounded-[20px] text-white font-black text-[12px] tracking-[0.2em] uppercase flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(255,0,0,0.1)] hover:bg-black/60 transition-all disabled:opacity-50"
-                        >
-                            <svg className="w-4 h-4 fill-[#FF0000] drop-shadow-[0_0_8px_#FF0000]" viewBox="0 0 24 24">
-                                <path d="M8 5v14l11-7z" />
-                            </svg>
-                            {t('join', 'ENTRAR')}
-                        </motion.button>
+                    </div>
+
+                    {/* Create Room Button (Pure Solid White) */}
+                    <button
+                        onClick={createGame}
+                        disabled={loading}
+                        className="w-full h-16 bg-white text-black font-black text-sm tracking-[0.25em] uppercase rounded-2xl flex items-center justify-center gap-3 active:scale-[0.98] transition-all disabled:opacity-50"
+                    >
+                        {loading ? (
+                            <div className="w-6 h-6 border-3 border-black/20 border-t-black rounded-full animate-spin" />
+                        ) : (
+                            <>
+                                <Plus size={24} strokeWidth={4} />
+                                {t('create_room', 'CREAR SALA')}
+                            </>
+                        )}
+                    </button>
+
+                    {/* Join Section */}
+                    <div className="flex flex-col gap-y-8">
+                        {/* Divider */}
+                        <div className="flex items-center gap-x-6 px-4">
+                            <div className="h-[1px] flex-1 bg-white/10" />
+                            <span className="text-[10px] font-black uppercase text-white/20 tracking-[0.4em]">
+                                {t('or_join_one', 'O ÚNETE A UNA')}
+                            </span>
+                            <div className="h-[1px] flex-1 bg-white/10" />
+                        </div>
+
+                        <div className="flex gap-x-4">
+                            <input
+                                type="text"
+                                value={code}
+                                onChange={(e) => setCode(e.target.value.toUpperCase())}
+                                placeholder={t('code', 'CÓDIGO')}
+                                className="flex-[3] h-16 bg-white/5 border border-white/10 rounded-2xl px-6 text-xl text-center text-white font-black tracking-[0.4em] placeholder:text-white/10 focus:outline-none focus:ring-1 focus:ring-white/20 transition-all backdrop-blur-xl"
+                            />
+                            <button
+                                onClick={joinGame}
+                                disabled={loading || !code}
+                                className="flex-[2] h-16 bg-white/10 border border-white/10 hover:bg-white/20 text-white font-black text-xs tracking-widest uppercase rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-50"
+                            >
+                                <svg className="w-4 h-4 fill-red-600 drop-shadow-[0_0_8px_rgba(220,38,38,0.5)]" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg>
+                                {t('join', 'ENTRAR')}
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                {/* Footer Signature */}
-                <div className="mt-12 text-center group cursor-default">
-                    <p className="text-[10px] font-black tracking-[0.5em] uppercase text-white/20 group-hover:text-white/40 transition-colors drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                {/* Footer */}
+                <div className="mt-4">
+                    <p className="text-[9px] font-black tracking-[0.5em] text-white/20 uppercase transition-opacity">
                         {t('made_with', 'HECHO CON PURA SAZÓN MEXA 🇲🇽')}
                     </p>
                 </div>
             </motion.div>
-
-            {/* Space Dust / Digital Particles Overlay (Hidden on Mobile) */}
-            <div className="hidden lg:block absolute inset-0 pointer-events-none opacity-20">
-                <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-white rounded-full animate-ping" />
-                <div className="absolute top-3/4 left-2/3 w-1 h-1 bg-white rounded-full animate-ping [animation-delay:1s]" />
-                <div className="absolute top-1/2 left-1/2 w-1 h-1 bg-white rounded-full animate-ping [animation-delay:2s]" />
-            </div>
         </div>
     );
 };
