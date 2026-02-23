@@ -96,13 +96,6 @@ const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
                     {loading ? '...' : t('button_create')}
                 </button>
 
-                {/* Separator */}
-                <div className="separator-container">
-                    <div className="separator-line" />
-                    <span className="separator-text">{t('separator')}</span>
-                    <div className="separator-line" />
-                </div>
-
                 {/* Join Section */}
                 <div className="field-group">
                     <label className="label-strict">{t('label_code')}</label>
