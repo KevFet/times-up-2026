@@ -12,7 +12,7 @@ interface GameProps {
 }
 
 const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
-    const { t, i18n } = useTranslation();
+    const { i18n } = useTranslation();
     const [phase, setPhase] = useState(1);
     const [currentTeam, setCurrentTeam] = useState(1);
     const [scores, setScores] = useState({ team1: 0, team2: 0 });
