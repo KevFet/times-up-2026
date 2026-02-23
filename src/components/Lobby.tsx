@@ -63,10 +63,7 @@ const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
     };
 
     return (
-        <div className="flex-1 flex flex-col justify-center items-center w-full min-h-screen px-6 py-12 relative overflow-hidden">
-            {/* Native 2026 Liquid Background Pattern from index.css */}
-            <div className="mesh-bg" />
-
+        <div className="flex-1 flex flex-col justify-center items-center w-full min-h-screen px-6 py-12 relative bg-[#000000] overflow-hidden" style={{ backgroundColor: '#000000' }}>
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -79,44 +76,44 @@ const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ delay: 0.2 }}
-                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1A1111]/80 backdrop-blur-lg border border-[#3A1818]"
+                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#1A1A1C] border border-[#2B2B2B]"
                     >
-                        <Zap size={10} className="fill-accent-primary text-accent-primary" />
-                        <span className="text-[9px] font-black tracking-widest text-[#FF3B30] uppercase">
-                            {t('edition', 'ÉDITION 2026')}
+                        <Zap size={10} className="fill-[#FF4D4D] text-[#FF4D4D]" />
+                        <span className="text-[9px] font-black tracking-widest text-[#FF4D4D] uppercase">
+                            {t('edition', 'EDICIÓN MEXICANA')}
                         </span>
                     </motion.div>
 
-                    <div className="flex flex-col items-center leading-none">
-                        <h1 className="text-[48px] font-black italic tracking-tighter text-white drop-shadow-md">
-                            TIME'S
+                    <div className="flex flex-col items-center leading-none mt-2">
+                        <h1 className="text-[48px] font-black italic tracking-tighter text-[#FFFFFF]">
+                            TIME'S UP
                         </h1>
-                        <h2 className="text-[54px] font-black italic tracking-tighter text-[#FF3B30] -mt-2">
-                            UP
+                        <h2 className="text-[54px] font-black italic tracking-tighter text-[#FF4D4D] -mt-3" style={{ textShadow: '0 0 15px rgba(255, 77, 77, 0.5)' }}>
+                            MX
                         </h2>
                     </div>
-                    <p className="text-[#888888] text-xs font-bold tracking-wide pt-2">
-                        {t('subtitle', 'The game that your aunts would ban.')}
+                    <p className="text-[#A0A0A0] text-xs font-bold pt-2">
+                        {t('subtitle', 'El juego que tus tías prohibirían.')}
                     </p>
                 </div>
 
                 {/* Specific exact UI from the image matching (No huge glass box wrapping it) */}
                 <div className="w-full space-y-6">
                     <div className="space-y-2">
-                        <label className="text-[8px] font-black tracking-widest text-[#666666] uppercase ml-1 block">
-                            {t('your_nickname', 'YOUR NICKNAME')}
+                        <label className="text-[8px] font-black tracking-widest text-[#A0A0A0] uppercase ml-1 block">
+                            {t('your_nickname', 'TU APODO')}
                         </label>
                         <input
                             type="text"
-                            placeholder={t('nickname_placeholder', 'Ex. El Bicho')}
-                            className="w-full bg-[#1A1A1C]/80 backdrop-blur-xl border border-[#1A1A1C]/50 rounded-[14px] px-5 py-4 text-sm text-white focus:outline-none focus:border-white/20 placeholder:text-[#555555] font-semibold transition-colors"
+                            placeholder={t('nickname_placeholder', 'Ej. El Bicho')}
+                            className="w-full bg-[#1A1A1C] border border-[#2B2B2B] rounded-[14px] px-5 py-4 text-sm text-[#FFFFFF] focus:outline-none focus:border-white/50 placeholder:text-[#555555] font-semibold transition-colors"
                         />
                     </div>
 
                     <button
                         onClick={createGame}
                         disabled={loading}
-                        className="w-full bg-white text-black font-black text-xs tracking-[0.15em] uppercase rounded-[14px] py-4 flex items-center justify-center gap-2 hover:bg-[#F0F0F0] active:scale-[0.98] transition-all disabled:opacity-50"
+                        className="w-full bg-[#FFFFFF] text-[#000000] font-black text-xs tracking-widest uppercase rounded-[14px] py-4 flex items-center justify-center gap-2 hover:bg-[#E0E0E0] active:scale-[0.98] transition-all disabled:opacity-50"
                     >
                         <AnimatePresence mode="wait">
                             {loading ? (
@@ -126,18 +123,18 @@ const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
                             ) : (
                                 <motion.div key="text" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2">
                                     <Plus size={16} strokeWidth={3} />
-                                    {t('create_room', 'CREATE ROOM')}
+                                    {t('create_room', 'CREAR SALA')}
                                 </motion.div>
                             )}
                         </AnimatePresence>
                     </button>
 
                     <div className="flex items-center gap-4 py-2 opacity-80">
-                        <div className="h-[1px] flex-1 bg-[#1A1A1C]" />
+                        <div className="h-[1px] flex-1 bg-[#2B2B2B]" />
                         <span className="text-[8px] font-black uppercase text-[#666666] tracking-widest whitespace-nowrap">
-                            {t('or_join_one', 'OR JOIN ONE')}
+                            {t('or_join_one', 'O ÚNETE A UNA')}
                         </span>
-                        <div className="h-[1px] flex-1 bg-[#1A1A1C]" />
+                        <div className="h-[1px] flex-1 bg-[#2B2B2B]" />
                     </div>
 
                     <div className="flex gap-3">
@@ -145,22 +142,22 @@ const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
                             type="text"
                             value={code}
                             onChange={(e) => setCode(e.target.value.toUpperCase())}
-                            placeholder={t('code', 'CODE')}
-                            className="flex-1 w-[60%] bg-[#1A1A1C]/80 backdrop-blur-xl border border-[#1A1A1C]/50 rounded-[14px] px-4 py-4 text-xs text-center text-white font-black tracking-[0.2em] focus:outline-none focus:border-white/20 placeholder:text-[#555555] uppercase transition-colors"
+                            placeholder={t('code', 'CÓDIGO')}
+                            className="flex-1 w-[60%] bg-[#1A1A1C] border border-[#2B2B2B] rounded-[14px] px-4 py-4 text-xs text-center text-[#FFFFFF] font-black tracking-widest focus:outline-none focus:border-white/50 placeholder:text-[#555555] uppercase transition-colors"
                         />
                         <button
                             onClick={joinGame}
                             disabled={loading || !code}
-                            className="w-[40%] bg-[#28282A]/80 backdrop-blur-xl border border-[#28282A]/50 hover:bg-[#323235] text-white font-black text-[10px] tracking-widest uppercase rounded-[14px] py-4 active:scale-[0.98] transition-all disabled:opacity-50 disabled:pointer-events-none flex items-center justify-center gap-1.5"
+                            className="w-[40%] bg-[#28282A] hover:bg-[#323235] text-[#FFFFFF] font-black text-[10px] tracking-widest uppercase rounded-[14px] py-4 active:scale-[0.98] transition-all disabled:opacity-50 disabled:pointer-events-none flex items-center justify-center gap-1.5"
                         >
-                            <svg className="w-3 h-3 fill-white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg> {t('join', 'JOIN')}
+                            <svg className="w-3 h-3 fill-white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg> {t('join', 'ENTRAR')}
                         </button>
                     </div>
                 </div>
 
                 <div className="pt-10 text-center">
                     <p className="text-[8px] font-black tracking-widest uppercase text-[#444444]">
-                        {t('made_with', 'MADE WITH PASSION 🔥')}
+                        {t('made_with', 'HECHO CON PURA SAZÓN MEXA 🇲🇽')}
                     </p>
                 </div>
             </motion.div>
