@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Zap, Search } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Plus, Zap } from 'lucide-react';
 
 interface LobbyProps {
     onGameCreated: (gameId: string) => void;
@@ -70,94 +70,85 @@ const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
     };
 
     return (
-        <div className="flex-1 flex flex-col justify-center max-w-sm mx-auto w-full px-6 py-12">
+        <div className="flex-1 flex flex-col justify-center items-center w-full px-6 py-12 bg-black">
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="space-y-12"
+                className="w-full max-w-[280px] space-y-10"
             >
-                <div className="text-center space-y-4">
+                <div className="text-center space-y-3">
                     <motion.div
                         initial={{ scale: 0.8 }}
                         animate={{ scale: 1 }}
-                        className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-accent-primary/10 border border-accent-primary/20"
+                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1A1111] border border-[#331818]"
                     >
-                        <Zap size={12} className="text-accent-primary fill-accent-primary" />
-                        <span className="text-[10px] font-black tracking-[0.2em] text-accent-primary uppercase">Edition 2026</span>
+                        <Zap size={10} className="fill-[#FF3B30] text-[#FF3B30]" />
+                        <span className="text-[9px] font-black tracking-widest text-[#FF3B30] uppercase">EDICIÓN MEXICANA</span>
                     </motion.div>
 
-                    <h1 className="text-7xl font-black tracking-tighter leading-tight">
-                        TIME'S <br />
-                        <span className="text-accent-primary">UP</span>
-                    </h1>
-                    <p className="text-text-secondary text-sm font-medium max-w-[280px] mx-auto leading-relaxed">
-                        The ultimate high-stakes guessing game, redesigned for the future.
+                    <div className="flex flex-col items-center leading-none">
+                        <h1 className="text-4xl sm:text-5xl font-black italic tracking-tighter text-white drop-shadow-md">
+                            SIN LÍMITES
+                        </h1>
+                        <h2 className="text-4xl sm:text-5xl font-black italic tracking-tighter text-[#FF3B30]">
+                            MX
+                        </h2>
+                    </div>
+                    <p className="text-white/40 text-[11px] font-bold tracking-wide pt-2">
+                        El juego que tus tías prohibirían.
                     </p>
                 </div>
 
                 <div className="space-y-4">
+                    <div className="space-y-1.5">
+                        <label className="text-[9px] font-black tracking-widest text-white/50 uppercase ml-1 block">
+                            TU APODO
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Ej. El Bicho"
+                            className="w-full bg-[#1A1A1C] border-none rounded-[14px] px-4 py-3.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-white/20 placeholder:text-white/20 font-medium"
+                        />
+                    </div>
+
                     <button
                         onClick={createGame}
                         disabled={loading}
-                        className="btn-premium w-full group relative overflow-hidden"
+                        className="w-full bg-white text-black font-black text-xs tracking-widest uppercase rounded-[14px] py-3.5 flex items-center justify-center gap-2 hover:bg-white/90 active:scale-95 transition-all disabled:opacity-50"
                     >
-                        <AnimatePresence mode="wait">
-                            {loading ? (
-                                <motion.div
-                                    key="loading"
-                                    className="flex items-center gap-3"
-                                >
-                                    <motion.div
-                                        animate={{ rotate: 360 }}
-                                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                                        className="w-5 h-5 border-2 border-black/10 border-t-black rounded-full"
-                                    />
-                                    <span className="text-xs">GENERATING ARENA DECK...</span>
-                                </motion.div>
-                            ) : (
-                                <motion.div key="text" className="flex items-center gap-3">
-                                    <Plus size={22} strokeWidth={3} />
-                                    <span>Launch Game</span>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
+                        {loading ? '...' : <><Plus size={16} strokeWidth={3} /> CREAR SALA</>}
                     </button>
 
-                    <div className="relative group">
-                        <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none text-white/10 group-focus-within:text-white/40 transition-colors">
-                            <Search size={20} />
-                        </div>
+                    <div className="flex items-center gap-3 py-1">
+                        <div className="h-[1px] flex-1 bg-white/10" />
+                        <span className="text-[8px] font-black uppercase text-white/30 tracking-widest whitespace-nowrap">
+                            O ÚNETE A UNA
+                        </span>
+                        <div className="h-[1px] flex-1 bg-white/10" />
+                    </div>
+
+                    <div className="flex gap-2">
                         <input
                             type="text"
                             value={code}
                             onChange={(e) => setCode(e.target.value.toUpperCase())}
-                            placeholder="Enter Arena Code"
-                            className="w-full bg-white/[0.03] border border-white/[0.08] rounded-[24px] pl-16 pr-24 py-6 text-white font-mono text-xl tracking-[0.2em] focus:outline-none focus:border-white/20 transition-all placeholder:text-white/5"
+                            placeholder="CÓDIGO"
+                            className="flex-1 w-full min-w-0 bg-[#1A1A1C] border-none rounded-[14px] px-2 py-3.5 text-xs text-center text-white font-black tracking-[0.2em] focus:outline-none placeholder:text-white/20 uppercase"
                         />
                         <button
                             onClick={joinGame}
                             disabled={loading || !code}
-                            className={`absolute right-4 top-1/2 -translate-y-1/2 font-black text-xs tracking-[0.2em] px-5 py-3 rounded-xl transition-all ${code ? 'bg-white text-black opacity-100 scale-100' : 'bg-white/5 text-white/10 opacity-0 scale-90'
-                                }`}
+                            className="bg-[#2C2C2E] hover:bg-[#3A3A3C] text-white font-black text-[11px] tracking-widest uppercase rounded-[14px] px-5 active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none flex items-center justify-center gap-1.5"
                         >
-                            JOIN
+                            <svg className="w-3 h-3 fill-white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg> ENTRAR
                         </button>
                     </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-8 pt-8 opacity-40">
-                    <div className="text-center space-y-1">
-                        <div className="text-xl font-black">120+</div>
-                        <div className="text-[9px] font-bold uppercase tracking-widest">Stars</div>
-                    </div>
-                    <div className="text-center space-y-1">
-                        <div className="text-xl font-black text-accent-primary">3</div>
-                        <div className="text-[9px] font-bold uppercase tracking-widest">Rounds</div>
-                    </div>
-                    <div className="text-center space-y-1">
-                        <div className="text-xl font-black text-accent-secondary">24/7</div>
-                        <div className="text-[9px] font-bold uppercase tracking-widest">Sync</div>
-                    </div>
+                <div className="pt-12 text-center">
+                    <p className="text-[8px] font-black tracking-widest uppercase text-white/20">
+                        HECHO CON PURA SAZÓN MEXA 🇲🇽
+                    </p>
                 </div>
             </motion.div>
         </div>
