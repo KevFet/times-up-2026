@@ -70,7 +70,7 @@ const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
     };
 
     return (
-        <div className="flex-1 flex flex-col justify-center max-w-lg mx-auto w-full px-6 py-12">
+        <div className="flex-1 flex flex-col justify-center max-w-sm mx-auto w-full px-6 py-12">
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}

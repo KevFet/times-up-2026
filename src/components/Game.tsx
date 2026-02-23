@@ -113,6 +113,13 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
         });
     };
 
+    const handleSwipeLeft = () => {
+        const newCards = [...cards];
+        const skippedCard = newCards.splice(currentCardIndex, 1)[0];
+        newCards.push(skippedCard);
+        setCards(newCards);
+    };
+
     const handlePhaseEnd = async () => {
         if (phase >= 3) {
             onFinish();
@@ -214,7 +221,8 @@ const Game: React.FC<GameProps> = ({ gameId, onFinish }) => {
                                 <SwipeCard
                                     name={cards[currentCardIndex]?.[`name_${i18n.language}`] || cards[currentCardIndex]?.name_en || '??'}
                                     onSwipeRight={handleSwipeRight}
-                                    canSkip={false}
+                                    onSwipeLeft={handleSwipeLeft}
+                                    canSkip={true}
                                 />
                             </div>
                         </motion.div>
