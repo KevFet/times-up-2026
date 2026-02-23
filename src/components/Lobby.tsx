@@ -63,118 +63,106 @@ const Lobby: React.FC<LobbyProps> = ({ onGameCreated, onJoinGame }) => {
     };
 
     return (
-        <div className="flex-1 flex flex-col justify-center items-center w-full min-h-screen px-4 py-8 relative bg-[#050505] overflow-hidden">
-            {/* Deep Ambient Orbs - 2026 Aesthetic */}
-            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none flex justify-center items-center">
-                <motion.div
-                    animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.4, 0.3] }}
-                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute w-[80vw] h-[80vw] sm:w-[40vw] sm:h-[40vw] bg-accent-primary rounded-full blur-[140px] opacity-30 mix-blend-screen -translate-x-1/4 -translate-y-1/4"
-                />
-                <motion.div
-                    animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.3, 0.2] }}
-                    transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                    className="absolute w-[70vw] h-[70vw] sm:w-[35vw] sm:h-[35vw] bg-[#5856D6] rounded-full blur-[140px] opacity-20 mix-blend-screen translate-x-1/3 translate-y-1/3"
-                />
-            </div>
+        <div className="flex-1 flex flex-col justify-center items-center w-full min-h-screen px-4 py-8 relative bg-transparent overflow-hidden">
+            {/* Native 2026 Liquid Background Pattern from index.css */}
+            <div className="mesh-bg" />
 
             <motion.div
-                initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full max-w-[340px] space-y-10 relative z-10 flex flex-col items-center"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+                className="w-full max-w-[360px] space-y-10 relative z-10 flex flex-col items-center"
             >
                 {/* Brand / Header */}
                 <div className="flex flex-col items-center text-center space-y-5">
                     <motion.div
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
-                        transition={{ delay: 0.3 }}
-                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1A1111]/80 backdrop-blur-xl border border-accent-primary/30 shadow-[0_0_20px_rgba(255,59,48,0.2)]"
+                        transition={{ delay: 0.2 }}
+                        className="btn-ghost flex items-center justify-center gap-2 px-4 py-2 rounded-full shadow-[0_0_15px_rgba(255,59,48,0.2)]"
+                        style={{ padding: '6px 16px', borderRadius: '100px' }}
                     >
-                        <Zap size={10} className="fill-accent-primary text-accent-primary" />
-                        <span className="text-[9px] font-black tracking-[0.2em] text-accent-primary uppercase">
+                        <Zap size={14} className="text-accent-primary" style={{ filter: 'drop-shadow(0 0 10px rgba(255, 45, 85, 0.5))' }} />
+                        <span className="text-[10px] font-black tracking-[0.2em] text-accent-primary uppercase">
                             {t('edition', '2026 EDITION')}
                         </span>
                     </motion.div>
 
-                    <div className="flex flex-col items-center leading-[0.85]">
-                        <h1 className="text-[56px] font-black italic tracking-tighter text-white">
+                    <div className="flex flex-col items-center leading-[0.80] pt-2">
+                        <h1 className="text-[64px] font-black italic tracking-tighter logo-text" style={{ fontSize: '72px' }}>
                             TIME'S
                         </h1>
-                        <h2 className="text-[64px] font-black italic tracking-tighter text-accent-primary">
+                        <h2 className="text-[72px] font-black italic tracking-tighter text-accent-primary" style={{ filter: 'drop-shadow(0 0 15px rgba(255, 45, 85, 0.4))' }}>
                             UP
                         </h2>
                     </div>
-                    <p className="text-white/40 text-[11px] font-bold tracking-widest uppercase">
+                    <p className="text-white/50 text-[11px] font-bold tracking-widest uppercase">
                         {t('subtitle', 'THE ULTIMATE GUESSING GAME')}
                     </p>
                 </div>
 
-                {/* Premium Glass Container */}
-                <div className="w-full relative group">
-                    <div className="absolute -inset-0.5 bg-gradient-to-b from-white/10 to-transparent rounded-[32px] blur-[2px] opacity-50" />
-                    <div className="space-y-6 bg-[#0F0F11]/80 backdrop-blur-3xl border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.6)] rounded-[32px] p-7 sm:p-8 relative">
+                {/* Main Glassmorphism UI Components - Uses global card-main class */}
+                <div className="w-full card-main p-8 space-y-7 border border-white/10" style={{ backdropFilter: 'blur(36px)', background: 'rgba(5, 7, 12, 0.6)' }}>
+                    <div className="space-y-4">
+                        <label className="text-[10px] font-black tracking-[0.2em] text-white/50 uppercase ml-2 block">
+                            {t('your_nickname', 'YOUR NICKNAME')}
+                        </label>
+                        <input
+                            type="text"
+                            placeholder={t('nickname_placeholder', 'Ex. El Bicho')}
+                            className="w-full bg-white/5 border border-white/10 backdrop-blur-md shadow-inner rounded-3xl px-5 py-5 text-[14px] text-white focus:outline-none focus:bg-white/10 focus:border-white/30 placeholder:text-white/20 font-black tracking-wider transition-all duration-300"
+                        />
+                    </div>
 
-                        <div className="space-y-4">
-                            <h3 className="text-[10px] font-black tracking-widest text-white/50 uppercase ml-1">
-                                {t('your_nickname', 'YOUR NICKNAME')}
-                            </h3>
-                            <input
-                                type="text"
-                                placeholder={t('nickname_placeholder', 'Ex. El Bicho')}
-                                className="w-full bg-[#18181A] border border-white/5 rounded-2xl px-5 py-4 text-[13px] text-white focus:outline-none focus:bg-[#202022] focus:border-white/20 placeholder:text-white/20 font-black tracking-wider transition-all duration-300"
-                            />
-                        </div>
+                    <button
+                        onClick={createGame}
+                        disabled={loading}
+                        className="w-full btn-premium flex items-center justify-center py-5 shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_35px_rgba(255,255,255,0.3)] duration-500"
+                        style={{ padding: '20px 0' }}
+                    >
+                        <AnimatePresence mode="wait">
+                            {loading ? (
+                                <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-3">
+                                    <div className="w-6 h-6 border-4 border-black/20 border-t-black rounded-full animate-spin" />
+                                </motion.div>
+                            ) : (
+                                <motion.div key="text" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2">
+                                    <Plus size={20} strokeWidth={3} />
+                                    {t('create_room', 'CREATE ROOM')}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </button>
 
+                    <div className="flex items-center gap-4 py-2 opacity-50">
+                        <div className="h-[2px] flex-1 bg-white/10 rounded-full" />
+                        <span className="text-[10px] font-black uppercase text-white/70 tracking-[0.2em]">
+                            {t('or_join_one', 'OR JOIN ONE')}
+                        </span>
+                        <div className="h-[2px] flex-1 bg-white/10 rounded-full" />
+                    </div>
+
+                    <div className="flex gap-4">
+                        <input
+                            type="text"
+                            value={code}
+                            onChange={(e) => setCode(e.target.value.toUpperCase())}
+                            placeholder={t('code', 'CODE')}
+                            className="flex-1 w-[55%] bg-white/5 border border-white/10 backdrop-blur-md shadow-inner rounded-[20px] px-4 py-5 text-[15px] text-center text-white font-black tracking-[0.3em] focus:outline-none focus:bg-white/10 focus:border-white/30 placeholder:text-white/20 uppercase transition-all duration-300"
+                        />
                         <button
-                            onClick={createGame}
-                            disabled={loading}
-                            className="w-full relative overflow-hidden bg-white text-black font-black text-[12px] tracking-[0.15em] uppercase rounded-2xl py-4 flex items-center justify-center gap-2 hover:bg-[#F0F0F0] active:scale-[0.97] transition-all duration-300 disabled:opacity-50 shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.25)]"
+                            onClick={joinGame}
+                            disabled={loading || !code}
+                            className="w-[45%] btn-ghost px-0 py-0 flex items-center justify-center gap-2 active:scale-[0.97] transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none hover:bg-white/10 border border-white/20 rounded-[20px]"
+                            style={{ padding: 0 }}
                         >
-                            <AnimatePresence mode="wait">
-                                {loading ? (
-                                    <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-3">
-                                        <div className="w-4 h-4 border-2 border-black/20 border-t-black rounded-full animate-spin" />
-                                    </motion.div>
-                                ) : (
-                                    <motion.div key="text" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2">
-                                        <Plus size={16} strokeWidth={3} />
-                                        {t('create_room', 'CREATE ROOM')}
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
+                            <Play size={12} className="fill-white" /> {t('join', 'JOIN')}
                         </button>
-
-                        <div className="flex items-center gap-4 py-1">
-                            <div className="h-[1px] flex-1 bg-white/5" />
-                            <span className="text-[9px] font-black uppercase text-white/30 tracking-widest">
-                                {t('or_join_one', 'OR JOIN')}
-                            </span>
-                            <div className="h-[1px] flex-1 bg-white/5" />
-                        </div>
-
-                        <div className="flex gap-3">
-                            <input
-                                type="text"
-                                value={code}
-                                onChange={(e) => setCode(e.target.value.toUpperCase())}
-                                placeholder={t('code', 'CODE')}
-                                className="flex-1 w-[55%] bg-[#18181A] border border-white/5 rounded-2xl px-4 py-4 text-[13px] text-center text-white font-black tracking-[0.2em] focus:outline-none focus:bg-[#202022] focus:border-white/20 placeholder:text-white/20 uppercase transition-all duration-300"
-                            />
-                            <button
-                                onClick={joinGame}
-                                disabled={loading || !code}
-                                className="w-[45%] bg-[#252528] hover:bg-[#2A2A2D] text-white font-black text-[10px] tracking-widest uppercase rounded-2xl py-4 active:scale-[0.97] transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none flex items-center justify-center gap-2"
-                            >
-                                <Play size={10} className="fill-white" /> {t('join', 'JOIN')}
-                            </button>
-                        </div>
                     </div>
                 </div>
 
-                <div className="pt-4 text-center">
-                    <p className="text-[9px] font-black tracking-widest uppercase text-white/20">
+                <div className="pt-2 text-center opacity-30">
+                    <p className="text-[10px] font-black tracking-[0.3em] uppercase text-white">
                         {t('made_with', 'MADE WITH PASSION 🔥')}
                     </p>
                 </div>
